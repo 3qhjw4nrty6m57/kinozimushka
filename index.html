@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poiret+One&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кинозимушка - Новогодний киномарафон</title>
+    <style>
+        body {
+            position: relative;
+			background: linear-gradient(120deg, #043111 30%, #b3d9ff 70%);
+            font-family: Poiret One, sans-serif;
+            text-align: center;
+            padding: 20px 40px;
+        }
+        .bottom-image {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          width: 100%; /* Or set a fixed width if you want it smaller */
+          height: auto; /* Or set a specific height if you need it */
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: bottom center;
+          z-index: -1; /* This will place it behind other content */
+        }
+        h1 {
+            color: #800020;
+            font-size: 3em;
+			text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Slight shadow for text */
+        }
+		p {
+            color: #f8f8f0; /* Sets the color to tomato red, same as h1 */
+            font-size: 1.1em; /* Adjust size to be smaller than the h1 */
+            font-weight: bold; /* Makes it bold to stand out */
+            margin-top: 10px; /* Adds some space above */
+			text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Slight shadow for text */
+        }
+        .movie-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .movie {
+            background-color: #9e1e2e; /* Soft light color to look like wrapping paper */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15); /* Deeper shadow for depth */
+            width: 280px;
+            text-align: center;
+            border: 4px solid #f8e8a3; /* Soft ribbon border */
+        }
+        .movie img {
+		    border-radius: 8px;
+            width: 84%;  /* Makes the image take full width of the container */
+			height: auto; /* Maintains aspect ratio */
+            max-height: 350px; /* You can adjust this value as needed */
+            object-fit: contain; /* Ensures the image fits within the container without cropping */
+            border-radius: 8px;
+            box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.4); /* Inset shadow */
+        }
+        .movie-title {
+            color: #f8e8a3;
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+        .movie a {
+            display: block;
+            margin-top: 10px;
+            color: #1b396b;  /* Soft lavender */
+            font-weight: normal;
+            text-decoration: none;  /* No decoration initially */
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.4em;
+            letter-spacing: 1px;
+            transition: color 0.3s ease, transform 0.3s ease, text-decoration-color 0.3s ease;
+        }
+        .movie a:hover {
+            color: #f8e8a3;  /* Golden hover effect */
+            transform: scale(1.05);
+            text-decoration: underline wavy;  /* Magical underline */
+            text-decoration-color: #f8e8a3; /* Matching golden underline */
+            text-decoration-thickness: 2px;
+        }
+        /* Base pagination styling */
+        .pagination {
+            margin-top: 20px;
+        }
+        
+        .pagination button {
+            padding: 10px 20px;
+            font-weight: normal;
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.2em;
+            margin: 0 10px;
+            cursor: pointer;
+            background-color: #043111; /* Button color */
+            color: #f8e8a3; /* Font color */
+            border: 1.5px solid #f8e8a3; /* Soft ribbon border */
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); /* Soft shadow */
+            transition: all 0.3s ease; /* Smooth transition */
+        }
+        /* Hover effect for pagination buttons */
+        .pagination button:hover {
+            transform: scale(1.05);
+            background-color: #9e1e2e; /* Hover background */
+            color: #f8e8a3; /* Hover font color */
+            box-shadow: 0 0 15px rgba(248, 232, 163, 0.45); /* Glowing effect */
+        }
+        /* Styling for page number buttons */
+        .page-list {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .page-list button {
+            padding: 10px;
+            cursor: pointer;
+            font-weight: normal;
+            font-family: 'Great Vibes', cursive;
+			font-size: 1em;
+            background-color: #043111; /* Page button color */
+            color: #f8e8a3; /* Font color */
+            border: 1px solid #f8e8a3; /* Soft ribbon border */
+            border-radius: 45%; /* Round buttons */
+            transition: all 0.3s ease;
+        }
+        /* Highlighting current page button */
+        .page-list button.current {
+            background-color: #9e1e2e; /* Current page background */
+            color: #b3d9ff; /* Font color */
+            box-shadow: 0 0 15px rgba(248, 232, 163, 0.45); /* Glowing effect */
+        }
+        /* Hover effect for page buttons */
+        .page-list button:hover {
+            transform: scale(1.05);
+            background-color: #9e1e2e;
+            color: #f8e8a3;
+            box-shadow: 0 0 15px rgba(248, 232, 163, 0.45);
+        }
+        /* Disable hover for current page button */
+        .page-list button.current:hover {
+            background-color: #9e1e2e;
+            color: #b3d9ff;
+            box-shadow: 0 0 15px rgba(158, 30, 46, 0.35);
+        }
+        /* Styling for 'Назад' and 'Вперёд' buttons */
+        .pagination button {
+            border-radius: 10px; /* Slightly rounded edges for prev/next buttons */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Добро пожаловать в Кинозимушку!</h1>
+    <p>Готова посмотреть, что в этом году для тебя принесли Снеговики?</p>
+
+    <div class="movie-container" id="movie-container">
+        <!-- Movie 1 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/79d21c41-fd66-4d1a-8f3a-720d729463e5/orig" alt="12 месяцев. Новая сказка">
+            <div class="movie-title">12 месяцев. Новая сказка</div>
+            <a href="https://t.me/kinozimushka/154" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 2 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/33aea3ad-854d-4344-a1ea-2886910c3b80/orig" alt="12 подарков на Рождество">
+            <div class="movie-title">12 подарков на Рождество</div>
+            <a href="https://t.me/kinozimushka/61" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 3 -->
+        <div class="movie">
+            <img src="https://clck.ru/3F6agN" alt="12 стульев">
+            <div class="movie-title">12 стульев</div>
+            <a href="https://t.me/kinozimushka/36" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 4 -->
+        <div class="movie">
+            <img src="https://clck.ru/3F6agD" alt="12 стульев">
+            <div class="movie-title">12 стульев</div>
+            <a href="https://t.me/kinozimushka/182" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 5 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1900788/0a04b206-e9f6-481b-bc2a-bf1df4eb70f7/orig" alt="8 женщин">
+            <div class="movie-title">8 женщин</div>
+            <a href="https://t.me/kinozimushka/59" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 6 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/c1453b97-3042-44eb-a744-b980b464de88/orig" alt="Ёлки">
+            <div class="movie-title">Ёлки</div>
+            <a href="https://t.me/kinozimushka/110" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 7 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/0523a7d2-b616-471d-b094-180310a37c69/orig" alt="Ёлки 2">
+            <div class="movie-title">Ёлки 2</div>
+            <a href="https://t.me/kinozimushka/111" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 8 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1704946/e96c026a-18f8-439b-b0d8-1df1dc15328c/orig" alt="Ёлки 3">
+            <div class="movie-title">Ёлки 3</div>
+            <a href="https://t.me/kinozimushka/112" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 9 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1629390/3417780a-ea55-496b-bdd7-7f16b23bc4f3/orig" alt="Ёлки 1914">
+            <div class="movie-title">Ёлки 1914</div>
+            <a href="https://t.me/kinozimushka/113" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 10 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1898899/22c36bec-4e87-4d8e-899c-f8bc3a538862/orig" alt="Ёлки 5">
+            <div class="movie-title">Ёлки 5</div>
+            <a href="https://t.me/kinozimushka/114" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 11 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/67e98588-760e-4338-a500-197664f374c0/orig" alt="Ёлки новые">
+            <div class="movie-title">Ёлки новые</div>
+            <a href="https://t.me/kinozimushka/115" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 12 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1900788/0faed302-d331-4943-a429-1a3a8557e67e/orig" alt="Ёлки последние">
+            <div class="movie-title">Ёлки последние</div>
+            <a href="https://t.me/kinozimushka/116" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 13 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4774061/fef26a9b-c8db-46d0-ae19-d6b0795f0c4e/orig" alt="Ёлки 8">
+            <div class="movie-title">Ёлки 8</div>
+            <a href="https://t.me/kinozimushka/117" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 14 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1898899/5a566192-735b-46e7-9f15-291dcb088863/orig" alt="Ёлки 9">
+            <div class="movie-title">Ёлки 9</div>
+            <a href="https://t.me/kinozimushka/118" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 15 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/10893610/88c05686-2fcc-4651-9711-4dd622f65196/orig" alt="Ёлки 10">
+            <div class="movie-title">Ёлки 10</div>
+            <a href="https://t.me/kinozimushka/137" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 16 -->
+        <div class="movie">
+            <img src="https://clck.ru/3F6azp" alt="Баба Мороз и тайна Нового года">
+            <div class="movie-title">Баба Мороз и тайна Нового года</div>
+            <a href="https://t.me/kinozimushka/33" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 17 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1600647/eedb72ba-ba20-486d-ba9e-1462538ac58d/orig" alt="Бабуся">
+            <div class="movie-title">Бабуся</div>
+            <a href="https://t.me/kinozimushka/28" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 18 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/9784475/8fa6cb61-df72-422a-8ee5-7a6b68ab9063/orig" alt="Бесстрашные летуны">
+            <div class="movie-title">Бесстрашные летуны</div>
+            <a href="https://t.me/kinozimushka/41" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 19 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4774061/a1a915e5-9874-4591-91c8-0ad2d356af11/orig" alt="Быть">
+            <div class="movie-title">Быть</div>
+            <a href="https://t.me/kinozimushka/78" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 20 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/6ed7202a-72d8-4225-a7ac-a0d46a5514a9/orig" alt="Величайший шоумен">
+            <div class="movie-title">Величайший шоумен</div>
+            <a href="https://t.me/kinozimushka/55" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 21 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1946459/159718ab-4670-4ea4-8a87-4348ae06b9d6/orig" alt="Вечера на хуторе близ Диканьки">
+            <div class="movie-title">Вечера на хуторе близ Диканьки</div>
+            <a href="https://t.me/kinozimushka/105" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 22 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1600647/87b653ed-bd41-4f75-8404-b5e271873e8a/orig" alt="Вечера на хуторе близ Диканьки">
+            <div class="movie-title">Вечера на хуторе близ Диканьки</div>
+            <a href="https://t.me/kinozimushka/123" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 23 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/1a7a8f0e-7b33-497a-a0b0-c2a9e4153f34/orig" alt="Вовка в Тридевятом царстве">
+            <div class="movie-title">Вовка в Тридевятом царстве</div>
+            <a href="https://t.me/kinozimushka/48" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 24 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/10893610/7b8a0aa1-204c-4bbc-8196-cf326469cb48/orig" alt="Вовка и зима в Тридевятом царстве">
+            <div class="movie-title">Вовка и зима в Тридевятом царстве</div>
+            <a href="https://t.me/kinozimushka/49" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 25 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/6201401/4ed85404-890f-4696-830c-6276acf9a150/orig" alt="Волшебная сказка на Рождество">
+            <div class="movie-title">Волшебная сказка на Рождество</div>
+            <a href="https://t.me/kinozimushka/35" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 26 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/4b96b55d-b619-442c-866b-48e9998cfcf8/orig" alt="Ворчун">
+            <div class="movie-title">Ворчун</div>
+            <a href="https://t.me/kinozimushka/92" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 27 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1629390/730b85a2-2c98-452f-b6fd-dadb085d5635/orig" alt="Все ждут Рождество: Люси против Крампуса">
+            <div class="movie-title">Все ждут Рождество: Люси против Крампуса</div>
+            <a href="https://t.me/kinozimushka/107" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 28 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1946459/b4b53350-dde8-4f94-b6e7-0ed8fec65996/orig" alt="Все ждут Рождество 2: Люси и магический кристалл">
+            <div class="movie-title">Все ждут Рождество 2: Люси и магический кристалл</div>
+            <a href="https://t.me/kinozimushka/108" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 29 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/6201401/ce6ad643-b4f3-4d62-b2cb-f9a000efdfc3/orig" alt="Магическая машина времени">
+            <div class="movie-title">Магическая машина времени</div>
+            <a href="https://t.me/kinozimushka/109" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 30 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4483445/80af6ee3-e0e5-4e43-822a-ea89ea6ac957/orig" alt="Всё хорошо">
+            <div class="movie-title">Всё хорошо</div>
+            <a href="https://t.me/kinozimushka/88" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 31 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1898899/27ed5c19-a045-49dd-8624-5f629c5d96e0/orig" alt="Гарри Поттер и философский камень">
+            <div class="movie-title">Гарри Поттер и философский камень</div>
+            <a href="https://t.me/kinozimushka/140" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 32 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4774061/1ef65bfb-b16b-42aa-a54a-758395253290/orig" alt="Гарри Поттер и Тайная комната">
+            <div class="movie-title">Гарри Поттер и Тайная комната</div>
+            <a href="https://t.me/kinozimushka/141" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 33 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4303601/3eabac99-fb98-4b12-ba9f-6172782d54c6/orig" alt="Гарри Поттер и узник Азкабана">
+            <div class="movie-title">Гарри Поттер и узник Азкабана</div>
+            <a href="https://t.me/kinozimushka/142" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 34 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4303601/672269af-efcb-41c3-85b4-e9ce87f1ea02/orig" alt="Гарри Поттер и Кубок огня">
+            <div class="movie-title">Гарри Поттер и Кубок огня</div>
+            <a href="https://t.me/kinozimushka/143" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 35 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4303601/1c8e7019-20c6-4bfb-ad17-6b7746ca5147/orig" alt="Гарри Поттер и Орден Феникса">
+            <div class="movie-title">Гарри Поттер и Орден Феникса</div>
+            <a href="https://t.me/kinozimushka/144" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 36 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4774061/3b4b90e6-0b62-410c-a583-6977df318fbe/orig" alt="Гарри Поттер и Принц-полукровка">
+            <div class="movie-title">Гарри Поттер и Принц-полукровка</div>
+            <a href="https://t.me/kinozimushka/145" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 37 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/6201401/66852969-2d21-45de-bae1-62ec7760f756/orig" alt="Гарри Поттер и Дары Смерти: Часть I">
+            <div class="movie-title">Гарри Поттер и Дары Смерти: Часть I</div>
+            <a href="https://t.me/kinozimushka/146" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 38 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4303601/82b5cc4a-18c7-4180-a98a-0c96528d63dd/orig" alt="Гарри Поттер и Дары Смерти: Часть II">
+            <div class="movie-title">Гарри Поттер и Дары Смерти: Часть II</div>
+            <a href="https://t.me/kinozimushka/147" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 39 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1946459/12e1f392-6df1-4a91-827a-763ac547adb4/orig" alt="Гринч — похититель Рождества">
+            <div class="movie-title">Гринч — похититель Рождества</div>
+            <a href="https://t.me/kinozimushka/104" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 40 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4303601/e3163c1e-f5cc-431f-b5e6-a9d65ae45b2f/orig" alt="Гринч">
+            <div class="movie-title">Гринч</div>
+            <a href="https://t.me/kinozimushka/170" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 41 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/6201401/35141703-9497-499f-8ce5-edcbc8c98c2a/orig" alt="Девушка с косой">
+            <div class="movie-title">Девушка с косой</div>
+            <a href="https://t.me/kinozimushka/44" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 42 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1600647/69536e92-3e2b-4696-a5c7-d68a98ab4291/orig" alt="Дед Мороз. Битва Магов">
+            <div class="movie-title">Дед Мороз. Битва Магов</div>
+            <a href="https://t.me/kinozimushka/131" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 43 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1600647/fde346cc-1063-41f5-a32a-96996adc6996/orig" alt="Дерево желаний">
+            <div class="movie-title">Дерево желаний</div>
+            <a href="https://t.me/kinozimushka/125" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 44 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/10835644/5edd5e70-3e79-40cb-86b5-cd5d8a83dfb7/orig" alt="Джинн">
+            <div class="movie-title">Джинн</div>
+            <a href="https://t.me/kinozimushka/121" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 45 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1704946/78221e5b-81fe-4e05-aa5f-4649ed909e2f/orig" alt="Добро пожаловать или соседям вход воспрещён">
+            <div class="movie-title">Добро пожаловать или соседям вход воспрещён</div>
+            <a href="https://t.me/kinozimushka/63" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 46 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1898899/e563ce1c-efa7-4c08-b35e-afe37da83eff/orig" alt="Духи Рождества">
+            <div class="movie-title">Духи Рождества</div>
+            <a href="https://t.me/kinozimushka/122" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 47 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/49c20d56-8466-4fdf-8fb5-133ff673d8bb/orig" alt="Дядюшка Ау в городе">
+            <div class="movie-title">Дядюшка Ау в городе</div>
+            <a href="https://t.me/kinozimushka/138" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 48 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1704946/23b79e0e-64d3-4b57-8638-d7d7ded55814/orig" alt="Каникулы в Простоквашино">
+            <div class="movie-title">Каникулы в Простоквашино</div>
+            <a href="https://t.me/kinozimushka/148" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 49 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1629390/9b6cd3e3-7ba2-4fbb-a268-3c8cad291eb5/orig" alt="Зима в Простоквашино">
+            <div class="movie-title">Зима в Простоквашино</div>
+            <a href="https://t.me/kinozimushka/149" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 50 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/10812607/edccbd16-afb5-4ebb-b707-a89a404e64a8/orig" alt="Зимние каникулы: Страна эльфов">
+            <div class="movie-title">Зимние каникулы: Страна эльфов</div>
+            <a href="https://t.me/kinozimushka/52" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 51 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/10809116/62a63ce5-056e-4193-ad97-fa6d52ecdad9/orig" alt="Зимние каникулы: Магический отель">
+            <div class="movie-title">Зимние каникулы: Магический отель</div>
+            <a href="https://t.me/kinozimushka/53" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 52 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/6201401/a7ef44b8-1983-4992-a889-da6f87a3f559/orig" alt="Иван Васильевич меняет профессию">
+            <div class="movie-title">Иван Васильевич меняет профессию</div>
+            <a href="https://t.me/kinozimushka/162" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 53 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/9784475/0d357941-77df-4aa2-b1b0-0f608887a2b9/orig" alt="Иван Васильевич меняет всё">
+            <div class="movie-title">Иван Васильевич меняет всё</div>
+            <a href="https://t.me/kinozimushka/167" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 54 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1704946/9ba8e12c-ab68-4ec5-83e1-f6f8d787700c/orig" alt="Ирония судьбы, или С лёгким паром!">
+            <div class="movie-title">Ирония судьбы, или С лёгким паром!</div>
+            <a href="https://t.me/kinozimushka/160" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 55 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/19fc318b-d9db-442d-a6f7-5daac115b12c/orig" alt="Ирония судьбы. Продолжение">
+            <div class="movie-title">Ирония судьбы. Продолжение</div>
+            <a href="https://t.me/kinozimushka/136" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 56 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4483445/1345c455-14f7-4981-980e-56aac8b6c2e9/orig" alt="Ирония судьбы в Голливуде">
+            <div class="movie-title">Ирония судьбы в Голливуде</div>
+            <a href="https://t.me/kinozimushka/156" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 57 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1946459/f1a9f067-a432-4665-86f7-bfdcda8df8b7/orig" alt="Карнавальная ночь">
+            <div class="movie-title">Карнавальная ночь</div>
+            <a href="https://t.me/kinozimushka/67" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 58 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1600647/fbcf8390-c6d4-4c45-b239-f5d6fbec3d91/orig" alt="Карнавальная ночь 2">
+            <div class="movie-title">Карнавальная ночь 2</div>
+            <a href="https://t.me/kinozimushka/68" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 59 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1629390/e8064e82-3842-4987-9ed8-859d2cf1a782/orig" alt="Комета Галлея">
+            <div class="movie-title">Комета Галлея</div>
+            <a href="https://t.me/kinozimushka/89" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 60 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/10703859/b13f202e-1059-4d98-9022-a91d16f587e5/orig" alt="Корпорация Морозов">
+            <div class="movie-title">Корпорация Морозов</div>
+            <a href="https://t.me/kinozimushka/152" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 61 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1777765/ead2583e-8997-4ca0-9d48-b4327f66381e/orig" alt="Красавица и чудовище: Чудесное Рождество">
+            <div class="movie-title">Красавица и чудовище: Чудесное Рождество</div>
+            <a href="https://t.me/kinozimushka/74" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 62 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4774061/bc5d51ec-27d6-4297-abc1-53d86cf8a459/orig" alt="Ледниковый период: Гигантское Рождество">
+            <div class="movie-title">Ледниковый период: Гигантское Рождество</div>
+            <a href="https://t.me/kinozimushka/168" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 63 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/4c36aebf-9fb1-47cf-b1d5-90e916d0314b/orig" alt="Любовь и голуби">
+            <div class="movie-title">Любовь и голуби</div>
+            <a href="https://t.me/kinozimushka/80" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 64 -->
+        <div class="movie">
+            <img src="https://clck.ru/3F6aSg" alt="Маленькие женщины">
+            <div class="movie-title">Маленькие женщины</div>
+            <a href="https://t.me/kinozimushka/180" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 65 -->
+        <div class="movie">
+            <img src="https://clck.ru/3F6aTG" alt="Маленькие мужчины">
+            <div class="movie-title">Маленькие мужчины</div>
+            <a href="https://t.me/kinozimushka/181" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 66 -->
+        <div class="movie">
+            <img src="https://clck.ru/3F6ada" alt="Маленькие женщины">
+            <div class="movie-title">Маленькие женщины</div>
+            <a href="https://t.me/kinozimushka/175" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 67 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4774061/f6e389ae-a9ac-477c-a769-b02ddb0cf3ec/orig" alt="Маленькие женщины">
+            <div class="movie-title">Маленькие женщины</div>
+            <a href="https://t.me/kinozimushka/173" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 68 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4774061/fd23e643-2ee0-4e31-ba6a-8c1960b695e8/orig" alt="Мальчик по имени Рождество">
+            <div class="movie-title">Мальчик по имени Рождество</div>
+            <a href="https://t.me/kinozimushka/119" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 69 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/10809116/5478299a-5e94-4111-b60e-5a7ca1bdea2e/orig" alt="Манюня: Новогодние приключения">
+            <div class="movie-title">Манюня: Новогодние приключения</div>
+            <a href="https://t.me/kinozimushka/132" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 70 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/10835644/0e229fd4-4ce8-4c1a-85ef-daeae1754445/orig" alt="Маша и Медведь: 12 месяцев">
+            <div class="movie-title">Маша и Медведь: 12 месяцев</div>
+            <a href="https://t.me/kinozimushka/139" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 71 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/10703859/e0f71928-fcf8-46b7-a645-b035bf261719/orig" alt="Миссия: Красный">
+            <div class="movie-title">Миссия: Красный</div>
+            <a href="https://t.me/kinozimushka/126" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 72 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/e2865fbf-31d8-45f5-b147-0eff7820e189/orig" alt="Мистер Джангл и рождественское путешествие">
+            <div class="movie-title">Мистер Джангл и рождественское путешествие</div>
+            <a href="https://t.me/kinozimushka/155" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 73 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1773646/b2999096-6f93-47bb-bf39-281934f5ab07/orig" alt="Моя мама Снегурочка">
+            <div class="movie-title">Моя мама Снегурочка</div>
+            <a href="https://t.me/kinozimushka/85" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 74 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/10671298/bcc33c02-25ce-4477-b352-06a1cadc6073/orig" alt="Настоящий Дед Мороз">
+            <div class="movie-title">Настоящий Дед Мороз</div>
+            <a href="https://t.me/kinozimushka/62" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 75 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4486362/74e6af5b-1943-429c-b823-f985e2b69515/orig" alt="Не одна дома">
+            <div class="movie-title">Не одна дома</div>
+            <a href="https://t.me/kinozimushka/30" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 76 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1600647/0d5abaef-ef9d-4782-ac00-88338f67149d/orig" alt="Необыкновенная история на Рождество">
+            <div class="movie-title">Необыкновенная история на Рождество</div>
+            <a href="https://t.me/kinozimushka/106" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 77 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1946459/3eca1863-7d93-4c57-b1d4-4d34f7169e19/orig" alt="Нико: Путь к звёздам">
+            <div class="movie-title">Нико: Путь к звёздам</div>
+            <a href="https://t.me/kinozimushka/150" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 78 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1600647/cf2325f5-ae28-4817-b8e9-818faeba513a/orig" alt="Нико 2">
+            <div class="movie-title">Нико 2</div>
+            <a href="https://t.me/kinozimushka/124" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 79 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/9784475/37954f1f-2824-4044-b956-6903283bbc83/orig" alt="Новогодние приключения Маши и Вити">
+            <div class="movie-title">Новогодние приключения Маши и Вити</div>
+            <a href="https://t.me/kinozimushka/128" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 80 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/10812607/def6340a-997b-4a37-969a-b03d5604be06/orig" alt="Новогодний ол инклюзив">
+            <div class="movie-title">Новогодний ол инклюзив</div>
+            <a href="https://t.me/kinozimushka/42" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 81 -->
+        <div class="movie">
+            <img src="https://kinopoisk-ru.clstorage.net/170UEd079/9ed200dM7pC/axNtvZVBCGfWIH6Ta4DnCe-wRKBv2zaX02JJP03OaHxaLe-k-E9dnf0cHxZPk4eE0QDpW-M4XPG3Xde0G7TpUv6W7OpRxp8wgactxXxA5xt9cwSlvIkjhJS0jXMBwiP2kSTwbPLFV9lrDZrAmcXSVsEU-MwwPE1q-N6Cq0OmPw2mE6H0GFnGqhb38Z9sh-BDfzAGp7Kf8l9FawH5BIEmPBXhPC75R1rd741EC5-KmphPU7RI63lKb3MMB-wDKXHOo9QndxgeSeCR9_aRJoqoBXp3SKA0lzrZxWbPdoLCJrVdYTjkM0xR3yVFwIeSzh3cT5W5jm-2zii_Q85mRCL7CWFV7P8U2E8imrt02mtCL4V5OouotVA7kEIpgvXDCGA6lyt_p7AL2ZWuSsoH14XR3oqWeMfrNUYnukCNo4ZisUWnlKxwkJvBoFI_NpZhjK4JfTdPaDgathkNqAZ-gIlmPpdrfaVxTdgRYIELS95L21dKm3hFJ_1BIHPPQ29IoPCDadYu_5SSSiif93SaJkCvwXj5zq2ymTUQhCjF_ASC5nUTIjBssg6aFeJGTw4bThuaQppyhyNwAyZzSw9uAyQ6xOGXK71YUkjqW_24GSBLJMW5-wthvtt9mkqsjzGIg2q_XKS9bb4PWRVsycpA003bWMfXcMCqM4EkesIDYU9r_o2iGGEzklmO7Rj2OR0tSS8M_7ZEJzcXNhcI7I61hUIntRzssqw3i9IXoIxPAZFC2RGCHzyH6DrIq35FAO4NYvnNYBakMBeeymjSuL3fbokqxH16DOexkXmUxCIK9ULParRbp_RsMcrQGiSNwYfWh9XeRJp1wqX5ya17iMBrTqT0TqAd7nFbGkkuX3j6V2vPYAy29w-osRc0kkOqzTSDAu79HWI463oNX1QqjknDGYgZVk_cMEfhsYLoN4dILgzseURuXW810lQIJppwMt5kBKyJv_3LpfcXet5A7s_6ygivtZhruq39BloeqwPCRBdF0dpI1jjLazJC7PwGx2NEpnCKbVJrtJWTyeSRODZarYdoDTh-wOW-33zfwuhOdQJGo_oQ4nEns4FR3WvCAk_VAlWcRF9_jWMyDeX-hYYjxyN_juccL3Vfmcig1PD7FWtNIApxuAQt_tE0kkNjQv0Ajqp6Gu-9ojmNVhQiRkLHHYaSW0YbNcslPkyuuU9Kao_jcsmmVyY1EdIALxCzcJjrgOUNcbCHqH3av1GM6UCyhMftvpehtKj3iRzQo41ESRgMVFlLH3eKI3yEpjfFSGEGIj_Br5-tONIQA-KXen7Z7ceiQr5zg6s6kDaZjCnHfwfML77bb3ggsAfclyUEy0aZhNEcwN9yg6g5DGyzBYAjy-n4hqYaLrFYlIVnV_u9m6pIZ8-6Pchot5c93ojgzvVKDCkz1-Z2qjHPX12sisJJXQdbFwidfw-re4phNIjH6QJrek3uX2ew3N4IrFmx8V6tT2xNfLdGJfSe8hiJKYexBsgrNtit8Sv4hJCV5IWExlkNnRyEUjnEqzHMpvZKyOhE5b_NbVQoNdEUgKUeO33WIcslhXb7SGD0Vn9QCGmNf4TJ4LwVITWj9g6SGSeJi0xeSBwYylp_BKawTiy_SMohz-L8CecaIDPdGgmukn58H-wKqMW1MQHv8Fk-GcGsz7ZPhOHy02l36_kH3xinCkfMW0VQ3I_UOkprO80utkvFoIyqe4XhnuNymheI7lu7M1cmD2jOtjeA5jCRMVFAZQAyjAnicxQr9-zxyxCVLkOPRxlKE1AMn3BMI_MB6XwMBeJHILfNYFgmuFcRD26eOHmaogrjgvpxRqZ2X_XSBm0N9kpEbnJebfGtN4Uf2eyNQsGRxx1ajhp2Q6B1zGw2zMYjyyr0imVeLLHc0IejX_W5EqjHYMQ_sEtttJRyV8Ykg7YMQy07mikxb_DJEl3uRQRM1QBUWkTceENhO0DjugqFLAwss4Wl06f9nJDIZNA-s9AuAm4NMrdNZzGae1HAYoI3y4dn-9OhN602zZ2V6s3AyxcGm1_P2z3FqfHOJbvEzmqLqrpE7lfrvBIfSeTZvfwX4sAnQ7Z-g6Z5XzdYQmWId0aDrbZUIj_ueMdV1i8LQgHXDp1fyxC3zyr7gOu5AIlnDSR0DevfZbwfm0mqU_n91qHIKwT-MY1m91A9XMikjfKCz6J9WyGxIv5DUtIlwIMAUQ7ZXIZVcYjtvkhk_8LPJoOldA9m1u50VFHLZlM_tlashC9McHZAYbzf9BpEYscwxc_oftTlP221A9ce5EsIQVWDk18D17iFbfWBYPSIwePHbPpCaZ-rvVOYi6hTP36XYY_ozfUxgKX-ETNTTWVHNg7A7z3crnaq9oVWXeLNjM-Zz1oZQdr4TyJ0QaY7y8EqTmK8Q-la7b0U18htVnr82WwC74x5MgxgNFR7X06lxnLFxyA4WGP_Lv9L0FkvCkpC1kxXEcAStQ9hcAUk-QjCYIos8kegVW592JFG7dE7OxntDWjCuroH5TdTcpOA48J8DoCl_51itCK3h5ccJIJFQxsD2BKHH3bD4nEN67KMDmuPLHuBaBKgsdNeziYaOjhf7Mdth7owB2g1HjGaCSzCeE6HavdepbQgvYmZnSyFAo_SS5UQCFc1h6DzAG57xkJhzSjxA-ifpr1ZE8YlGHe00aDCbwS5ukmg-Bz8lokmgTCDDGF8H60_5bUKGdXqTMwO3gwU1gMcuMpm8UGm_IcO7EPrvwttGyuwH5BJoJb4_J7mROBMdPiOZzKcdlkN4op4xkOq9x9ufmKwTJCZ5wiDC96CGJSHnD5MrbTIrDaMj-4FZPrLKlUosNxYBqKf9XSX5kqkSbx9R2zxFj2SQmWKtYrPY_VYqj0sOcuXGOXIgsNbRVUTylf3TOl4DqR7wkFnTKjyi6CX7DRXEwDvUj94H6QHr413MMeoupg0EcIlw7BAQSI9EiG0aztOnN8iicBB2I3dUMvc_0tjecWv-o" alt="Новогодний сборник советских мультфильмов">
+            <div class="movie-title">Новогодний сборник советских мультфильмов</div>
+            <a href="https://t.me/kinozimushka/90" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 82 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/10835644/a37e7781-15e9-4b0f-bd49-fa4aea45da19/orig" alt="Новогодний шеф">
+            <div class="movie-title">Новогодний шеф</div>
+            <a href="https://t.me/kinozimushka/79" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 83 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/6201401/022a58e3-5b9b-411b-bfb3-09fedb700401/orig" alt="Один дома">
+            <div class="movie-title">Один дома</div>
+            <a href="https://t.me/kinozimushka/95" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 84 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/e87b5842-3065-422e-81e8-59a1ffcd9b6a/orig" alt="Один дома 2: Затерянный в Нью-Йорке">
+            <div class="movie-title">Один дома 2: Затерянный в Нью-Йорке</div>
+            <a href="https://t.me/kinozimushka/96" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 85 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4774061/e3ace94b-e349-4451-a24b-8b4066a46ab6/orig" alt="Один дома 3">
+            <div class="movie-title">Один дома 3</div>
+            <a href="https://t.me/kinozimushka/97" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 86 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4774061/9085d7e4-6631-4d27-ad72-7c0306c17aca/orig" alt="Один дома 4">
+            <div class="movie-title">Один дома 4</div>
+            <a href="https://t.me/kinozimushka/98" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 87 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/6201401/73475e06-03b1-4ce5-b44b-2cc1d5acdd31/orig" alt="Один дома 5: Праздничное ограбление">
+            <div class="movie-title">Один дома 5: Праздничное ограбление</div>
+            <a href="https://t.me/kinozimushka/99" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 88 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1898899/195d6b79-a0e2-4c74-bc29-ac62152c6bfc/orig" alt="Одна дома">
+            <div class="movie-title">Одна дома</div>
+            <a href="https://t.me/kinozimushka/133" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 89 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4303601/fb4e551f-3430-471e-9667-2b7edef12ede/orig" alt="Олаф и холодное приключение">
+            <div class="movie-title">Олаф и холодное приключение</div>
+            <a href="https://t.me/kinozimushka/73" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 90 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/6201401/8c695c58-a80a-4da8-b2a0-43fac43f95dd/orig" alt="Оливье">
+            <div class="movie-title">Оливье</div>
+            <a href="https://t.me/kinozimushka/76" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 91 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4774061/ccd69a69-7405-4b41-89a8-60dd6dc2a3ee/orig" alt="Операция «Ы» и другие приключения Шурика">
+            <div class="movie-title">Операция «Ы» и другие приключения Шурика</div>
+            <a href="https://t.me/kinozimushka/163" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 92 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1777765/185b0c9f-d07a-4529-b023-cdb20eceb18a/orig" alt="Отпуск по обмену">
+            <div class="movie-title">Отпуск по обмену</div>
+            <a href="https://t.me/kinozimushka/100" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 93 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1704946/a9b8240d-4502-490a-b4d8-4bce7b5d2ac4/orig" alt="Полярный экспресс">
+            <div class="movie-title">Полярный экспресс</div>
+            <a href="https://t.me/kinozimushka/93" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 94 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/8fa54224-6c75-4d36-bc4e-bd894b31648e/orig" alt="Праздник">
+            <div class="movie-title">Праздник</div>
+            <a href="https://t.me/kinozimushka/153" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 95 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1898899/cdca2aed-0966-464a-b82d-b44f5603be51/orig" alt="Приходи на меня посмотреть">
+            <div class="movie-title">Приходи на меня посмотреть</div>
+            <a href="https://t.me/kinozimushka/84" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 96 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/9131f77a-8f8c-4ac7-8df0-848a6970c713/orig" alt="Пусть идёт снег">
+            <div class="movie-title">Пусть идёт снег</div>
+            <a href="https://t.me/kinozimushka/70" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 97 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4483445/b1d2f164-a2cc-412f-9702-ceb73b4a5551/orig" alt="Путеводная звезда">
+            <div class="movie-title">Путеводная звезда</div>
+            <a href="https://t.me/kinozimushka/102" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 98 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1773646/1d0931b4-e23c-495a-9ef8-a87c40f6a4ef/orig" alt="Путешествие к Рождественской звезде">
+            <div class="movie-title">Путешествие к Рождественской звезде</div>
+            <a href="https://t.me/kinozimushka/165" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 99 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1600647/ceb03f1a-1140-45ba-a48a-27b2252a82ea/orig" alt="Рождественская история">
+            <div class="movie-title">Рождественская история</div>
+            <a href="https://t.me/kinozimushka/32" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 100 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/e773c2ef-9608-4085-8402-27d17165a353/orig" alt="Рождественская история">
+            <div class="movie-title">Рождественская история</div>
+            <a href="https://t.me/kinozimushka/161" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 101 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/a860c14c-ef9a-445c-ac5e-eafed6d45585/orig" alt="Рождественская свеча">
+            <div class="movie-title">Рождественская свеча</div>
+            <a href="https://t.me/kinozimushka/169" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 102 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1773646/c5d96751-35fa-4dab-9f72-697aacb04b45/orig" alt="Рождественские хроники">
+            <div class="movie-title">Рождественские хроники</div>
+            <a href="https://t.me/kinozimushka/65" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 103 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1600647/b9b8268c-94e4-442c-afd6-ffde99426c76/orig" alt="Рождественские хроники 2">
+            <div class="movie-title">Рождественские хроники 2</div>
+            <a href="https://t.me/kinozimushka/66" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 104 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1629390/d82b3d42-64ab-42e5-b02e-42cc3f87b7cd/orig" alt="Рождественское приключение Бетховена">
+            <div class="movie-title">Рождественское приключение Бетховена</div>
+            <a href="https://t.me/kinozimushka/120" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 105 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/9784475/159870b2-9fe6-48aa-96e2-bc57bb453bd5/orig" alt="Рождество в городе мастеров">
+            <div class="movie-title">Рождество в городе мастеров</div>
+            <a href="https://t.me/kinozimushka/46" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 106 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/ed22f4ca-eecc-401a-99d4-8504e9e7d9ac/orig" alt="Рождество на двоих">
+            <div class="movie-title">Рождество на двоих</div>
+            <a href="https://t.me/kinozimushka/101" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 107 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1777765/97a3483b-9740-43ea-96e3-580c5ea45a57/orig" alt="Рождество на льду">
+            <div class="movie-title">Рождество на льду</div>
+            <a href="https://t.me/kinozimushka/58" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 108 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4303601/d3aa2a2b-5947-43da-8669-688770c2c1b6/orig" alt="Рождество, опять">
+            <div class="movie-title">Рождество, опять</div>
+            <a href="https://t.me/kinozimushka/54" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 109 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1629390/9f39233d-a360-439d-a330-41216b23e918/orig" alt="Самое первое Рождество">
+            <div class="movie-title">Самое первое Рождество</div>
+            <a href="https://t.me/kinozimushka/45" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 110 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1773646/d3b20e57-76d8-4472-a927-1dc050710de2/orig" alt="Санта и компания">
+            <div class="movie-title">Санта и компания</div>
+            <a href="https://t.me/kinozimushka/47" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 111 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/10893610/a6de7305-d99f-4013-a7f5-084bc4de95e4/orig" alt="Секретарь Деда Мороза">
+            <div class="movie-title">Секретарь Деда Мороза</div>
+            <a href="https://t.me/kinozimushka/134" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 112 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4716873/b19fcaf1-a71d-4685-9ec9-5f049a112425/orig" alt="Семьянин">
+            <div class="movie-title">Семьянин</div>
+            <a href="https://t.me/kinozimushka/56" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 113 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/6201401/0edeabed-a1bb-4d1d-b761-19a6c8ea5683/orig" alt="Серебряные коньки">
+            <div class="movie-title">Серебряные коньки</div>
+            <a href="https://t.me/kinozimushka/43" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 114 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1777765/52149cdd-b01e-4dcf-8957-9182b0a6257a/orig" alt="Сирота казанская">
+            <div class="movie-title">Сирота казанская</div>
+            <a href="https://t.me/kinozimushka/82" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 115 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1777765/fd4e75bb-a6fe-46ef-86cd-0f470334fcbd/orig" alt="Служебный роман">
+            <div class="movie-title">Служебный роман</div>
+            <a href="https://t.me/kinozimushka/81" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 116 -->
+        <div class="movie">
+            <img src="https://kinopoisk-ru.clstorage.net/170UEd079/9ed200dM7pC/axNtvZVBCGfWIH6Ta4DnCe-wRKBv2zaX02JJP03OaHxaLe-k-E9dnf0dXZZPU8WGkQNpWiP53KQi3de2G7UpUv8CeapREx1nwbMshnyA5s9psxPzKYkjBtQmnmmaBaR2VqezLXeFVZblTYyHiAST0UESv8ynehuhskFMcg_pN0GuXCC83Z-C7Z9_PNchTaLJ-j9G5r9YOVfFrQ43RI-hNVNtN-i7x14U6EkIB1bPlZ4J3DGL6_7A5LVEx6CKrnfO4J8le1scgqoQNbvXJkPoxLJ5Q6HxX79fDSuOOooAJ3ZT5H9ovw2UH-NLws_SQ5jajpgxTeY4RCsxAwvvQyQwxWpY5_qQlI5sFvewm6QIpQw1-UDsMlc-mAxiCXXHg2a8FWu1IvhOF1hrAUnA2MPdkUKa9E4nccCouQwO7ADh8oUgFCE70BsKL5h1eB_mRK_CtHVE4faXs9KB60b0QwglPRNvtWL6TNYeaoWHCxmP1F9IEzRDJ_MMYL4Lx2POLTxHYdLveVKUDiYT_bXXpEjoDrW9QS93UjlRAuLPdICKoTaTJDErt4UVXSiBBcxdyhFaiN48Qi0xCO38Dcfngix3w6uVZzhX1sLmET9x3WjL7gU-uYAtsp41E0poAfDKRy03H-5-rTqEGVzrgYtD2ITZWUgcuQ8vdoGufg_Obo4jO4xv3CS3HVgI7dc4Mtbpz-MHNXDGYP3YvN8B5UOwy8Mg9lLkPuU1RZDYYINHBl3Fm1ZKVfzHYzHDpzeAyumNrHmFaJzmudhbjSqTvfiYbQ2gxzC4RKy1GDpZTmaPfk-D53sf5Xmuc4WWmWKOwwfTQ9yTRpo6Qip0jmQ2hs8kTSk6Q2UfJrKSGsGuEPt1WCqFpYF6cI8htlc63wNgCPaIQia2m6w_a78C3V7twM0EWwcTnIoSMQRv8cosfcODK8VseAvoFejyE15I4FHzsFDiDKpKtvWGK3JafN9NLAuyioxvvNrkumI9RFpV6IpMidCAHVFCnjYOZ31Ar73HSKpKITBB4dvr_RffDyeQMbsY5ohjyXJxAah5GjUXSy2JtAsDp_LWqzLr9s4U0uNJjEgQi98Wxtg6hyA7SK_yzkopC2GzxO7fYbNTHsUtkXX-0CvHpQM6dkhuvdJ1GQNgCD8Hi6U63ys45jpLnt7kgMXMUAMXkgEfOMNqfQ6js4UN48co-wTjmCD4Wl6LZln6OpOgSiXO_3FIZj5X9hKIo8e1BcQhc5jvtagzQVDarkREB1aNEhjHHTXHKDwI4XuNg2nFI3LFrpApMNFTSKRaN71argsjibg-h6U6VLFYAWvHdYIJonha7_lm_8kXVG4Dwo7ZgpOQQli-By01g6TzRwepDWG_DmnXILVS2sIg3LJ9221JZAZ9s4PrcZc8Xwosw7yLg--4XGL17_FDlpztyUsA0I1XE8hTdkUguYDmdUqAJEqrdozrHGjwG9tGalF5c5EhjGMBdjFFYf_af1bF6sJ1wsejfF5n-qR2wl_XIgEDD5YCUxkOWPqKZnKArDONQuZFqjACLpzr-1ReS6DZcDQbrQTvhT_5Ty3xn3-eSKJDNcgJIX2V7TcoskpRXSCNwAOZiFRcj1y0giCyjS2xBwvkR2O7BW1YYbVcWEeuUHu4XqzNIkSyuYznuBB7kQnrivCKwOowlKPxYPACXlRtjECAVQhRUcOY8Qxl_ECmMgUC50ji-E3q1GcxnxkAo9E7cZvjhehBcrKP4TkZu1kGows5RUQpvZciNiJwBVaYogHJyZ2DE16AFHJHL_oIbv7CyKCIoDPHJpzm91rTzaVWu7QYqUhsRPn-w6f_Wf2XwiBNMUiA7_AbI3xkdkSQ1q1NCwdQBZvTjh7wwin1i-gzR4JgS2G_zWXb4_FQ2kZk3nZ11WnAZol6uAZm8pI_XEWljXjGwKn3WGq4ILaGV5qgyQnPFojfFMceOgQn9Uqmv8gOpghueMsi1CN825YGJJGx-h5jAuBMdHELYfSYulJMo4s-x0FuMxKq8aiwRJGeLwENR9IPHRIIG7EDYnOCbDEOD2hDKP9NKxVo-JfXiKsQMfOdLMUsjj0_j6g6WfKXAKoJOc0B4zfY53YruAfflOdCyIFQxd0aDhu1yOh5AWZ_wA2sBCV5w-VcbXAZ14UvEH952S0Eb4YxeMfnNJl8mAqug_jIhCd71yx5KDbLWRDgRsJKkcRbGkoY-I0uPsYjt09LbkJk90LlXuB5kh_O5ZKzeR9mhGLKNTBJoPmeNxfD6A8-gkZge50v9uy4hBJQZYoDwRqFX5cAG30P5zNGaH5LQCRMobOLaxPvMNfWySzSfXkfrkWvwfKxzOc5WnXZBKEGOQJAq3SabP6n8UNR1uTJBUeeC5PbyV0_Aqf5Cem-jY9nTGg6hS0Sb_WR1o5jkbh8WiwLokz18EDktZ-_nEytBfmDBGBzVWl6anjHWBhizciAWIbcWMRVvsrquUrt-g9NpE8i_stjFib6EhZCJR84-xvryyNDcr6DbL4avJtFYcu_hwqrNNCuv2szyxDUJYjDCFeHERdLVvnHKXXJ7PLABiCDKfvL6tDuvdzaSeqX8zAa6I0iiXf7g-a-l77WBmhCcIcO6zMfpnysM8ka2isJyw8QS9hfBlR2j2oxi27_Rc9qzyO5z2BSbjDa1sOnn_AyV2QDbox1eIBs8F9z1MtkwnrERia4FC09pLgMElmrQQ3G3srUGIeSfcTnfE1svo1IK4OuNwwuWuu0V9uFJBB1vNgsTCgK-jBNLjeYuVRBq0a-zw5j99-mPWf5ixcfIg0AgpHP1JaL0PlEYfqGKTeHgiACrHGDa5qs-lTbRuxfd7XVpEUoBL41hav-k3reCmAJOc_DL3sWpHqjusWemCWMAkKQB1FRxle0j6j6wuXxj89uzCU4T2PaJjiQX82nWTp4H6jNakm18U7mflcxUAPjiXmGxuX1V2wwKDOCnB0uS8UD0oXSmU4UtQSg_UjkOo" alt="Смешарики. Новогодние серии">
+            <div class="movie-title">Смешарики. Новогодние серии</div>
+            <a href="https://t.me/kinozimushka/129" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 117 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1704946/6ecd3a7f-bdf2-432a-ba0e-5d36430ce046/orig" alt="Снегурочку вызывали?">
+            <div class="movie-title">Снегурочку вызывали?</div>
+            <a href="https://t.me/kinozimushka/83" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 118 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/9784475/357f4de1-4dca-4674-8800-b7415fa8403f/orig" alt="Снежная королева">
+            <div class="movie-title">Снежная королева</div>
+            <a href="https://t.me/kinozimushka/164" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 119 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/ac3db5d0-f54c-4b80-90b5-b71befbe29ba/orig" alt="Снежная сказка">
+            <div class="movie-title">Снежная сказка</div>
+            <a href="https://t.me/kinozimushka/72" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 120 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1600647/b35ffa08-2dee-4623-b39d-aee0c16bcaaf/orig" alt="Снежные псы">
+            <div class="movie-title">Снежные псы</div>
+            <a href="https://t.me/kinozimushka/71" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 121 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1946459/d0f05061-6a94-45ac-a8cf-8fac082c977c/orig" alt="Со мною вот что происходит">
+            <div class="movie-title">Со мною вот что происходит</div>
+            <a href="https://t.me/kinozimushka/57" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 122 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4486454/adae2892-0c9c-4916-a558-ccc5c6b82e8a/orig" alt="Старушки в снегах">
+            <div class="movie-title">Старушки в снегах</div>
+            <a href="https://t.me/kinozimushka/31" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 123 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1946459/00dedd88-d9f9-4f19-a205-c929c2b5a15f/orig" alt="Стойкий оловянный солдатик">
+            <div class="movie-title">Стойкий оловянный солдатик</div>
+            <a href="https://t.me/kinozimushka/29" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 124 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1900788/18cd432a-5f73-4fd9-91ae-f649a2d35db3/orig" alt="Страна ОЗ">
+            <div class="movie-title">Страна ОЗ</div>
+            <a href="https://t.me/kinozimushka/135" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 125 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1773646/af32a86b-5c65-49fe-a19d-be382768bca8/orig" alt="Страна хороших деточек">
+            <div class="movie-title">Страна хороших деточек</div>
+            <a href="https://t.me/kinozimushka/151" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 126 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/27541f3f-9b39-40f3-8fb7-5fd6300f1c58/orig" alt="Странное Рождество">
+            <div class="movie-title">Странное Рождество</div>
+            <a href="https://t.me/kinozimushka/91" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 127 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/00fae494-4f60-4d64-bc81-82c769ecc693/orig" alt="Счастливого Рождества">
+            <div class="movie-title">Счастливого Рождества</div>
+            <a href="https://t.me/kinozimushka/60" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 128 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1704946/2035516c-7e05-4089-b2ac-2d5f82efe343/orig" alt="Счастье в конверте">
+            <div class="movie-title">Счастье в конверте</div>
+            <a href="https://t.me/kinozimushka/86" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 129 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1629390/c78c78a4-41cf-46ac-ba1f-e1a3d3b22d43/orig" alt="Тайна">
+            <div class="movie-title">Тайна</div>
+            <a href="https://t.me/kinozimushka/77" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 130 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1629390/a7996f83-7a33-43aa-af16-6a26f8b3458d/orig" alt="Такси 3">
+            <div class="movie-title">Такси 3</div>
+            <a href="https://t.me/kinozimushka/103" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 131 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/10812607/54c216dc-2188-4baf-b744-2e726ed9ed47/orig" alt="Тем Рождеством">
+            <div class="movie-title">Тем Рождеством</div>
+            <a href="https://t.me/kinozimushka/51" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 132 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/b3aa3ef2-cc13-4ae5-81a5-0ece9f689f5a/orig" alt="Три богатыря и принцесса Египта">
+            <div class="movie-title">Три богатыря и принцесса Египта</div>
+            <a href="https://t.me/kinozimushka/127" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 133 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4774061/503c1b44-257a-4070-a74f-077e281a2344/orig" alt="Три мудреца против Санты">
+            <div class="movie-title">Три мудреца против Санты</div>
+            <a href="https://t.me/kinozimushka/40" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 134 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1629390/4f54fb71-a509-4c8f-9a02-b2b785ea37dd/orig" alt="Хороший доктор">
+            <div class="movie-title">Хороший доктор</div>
+            <a href="https://t.me/kinozimushka/34" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 135 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/c6d5650b-1c39-4946-86f8-460220ee1949/orig" alt="Хранители снов">
+            <div class="movie-title">Хранители снов</div>
+            <a href="https://t.me/kinozimushka/171" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 136 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1704946/dc10ecc5-a684-4586-bdb3-ed8e589df877/orig" alt="Чародеи">
+            <div class="movie-title">Чародеи</div>
+            <a href="https://t.me/kinozimushka/64" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 137 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/6201401/775c2a46-c6a1-488c-8f08-b5d0141c4102/orig" alt="Чук и Гек. Большое приключение">
+            <div class="movie-title">Чук и Гек. Большое приключение</div>
+            <a href="https://t.me/kinozimushka/130" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 138 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1629390/6a188b5e-dcc6-41f5-a240-2e11d9980cd9/orig" alt="Щелкунчик">
+            <div class="movie-title">Щелкунчик</div>
+            <a href="https://t.me/kinozimushka/158" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 139 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1629390/0755389d-393c-4214-aaa1-86909604be5a/orig" alt="Щелкунчик и Крысиный король">
+            <div class="movie-title">Щелкунчик и Крысиный король</div>
+            <a href="https://t.me/kinozimushka/159" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 140 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/1599028/b5374dfd-4768-432c-8526-d21d2cc00e43/orig" alt="Щелкунчик и четыре королевства">
+            <div class="movie-title">Щелкунчик и четыре королевства</div>
+            <a href="https://t.me/kinozimushka/94" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 141 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/4716873/223098e4-a28c-4e9f-aa7b-8815291a83f1/orig" alt="Щелкунчики">
+            <div class="movie-title">Щелкунчики</div>
+            <a href="https://t.me/kinozimushka/50" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 142 -->
+        <div class="movie">
+            <img src="https://image.openmoviedb.com/kinopoisk-images/10893610/c763cab4-ee73-449a-9717-701052dfbffb/orig" alt="Эта замечательная жизнь">
+            <div class="movie-title">Эта замечательная жизнь</div>
+            <a href="https://t.me/kinozimushka/69" target="_blank">Смотреть</a>
+        </div>
+
+        <!-- Movie 143 -->
+        <div class="movie">
+            <img src="https://kinopoisk-ru.clstorage.net/1K43Ns281/0c16aaInzx/NbhT9wmFC8TBZBI3EDpmB_lwj3_XCzHUxVSmTlv0so0yD6IAnWjsv6F2yjSPMgfUTHA_rLw4bAmUfctN2GhkvXftFK9WzhObxzpdeEMxNwHka4MikRZ5goFJtRMAq529Gj2LcrtXxJ-NF4x1yiVfhBIwLvXhemUSgz-5K51-Hds6oU_ZLqdD_OlwaDsJFUAxzDSjQ8lOJ-HCO5xGRd-hgygKk3yHafmRoDGpcuVObKU6LDTQ2G9EaLQnoCbVfyP1GY9y4AieZ-bmZnokAyJQGtYXgEz3URHc9RynU0Ddu6ofL4p7kGf9v6I4kE3aT36cDzsOy-dkfFadAoAT70QGxC-Ids4NunXq9kdTNyQQQRX5GIpw9Wgb-tIAtERP9oaACgaDSJBf6ryTFZ9T7Hh2hToQJMDbbUR9oB6fPct5GvQ3vHbYIYJQ4PNRfhwJA2YQ7iaVecxLMPLADYlDTO-NhT83u1-CfNeBqw-cWNNifoMpCTrs601kW4cHkB7HSAbiALxF3C-8f8vLb1MAAz9EJPgLtnHkSzvp2TS4S0f-lYApDoZfjVHDgogBkXvsYWCeCC4v-_JkfF29IYQfxGcn1w-_f9kWpmLHwGFYDzg1VQDUMItP7UUSy_k4h0Z44YmaEwmkaZF975WeHJp7y0dNpi4MFuDrYGx3qR-IHMhiJ8EKmmPOKbtk3uJFay8ZJHE79Qu2VuliEevkGptQUtWotAMvqHujXeK_rTOBZvFkWLs-Chfw8ERkV7cwih_PfSnjBapsxjm-S8_PVlEPIx1oNNEHq1XEUTn35g-mZn_JjYo0MLhfgXHkubQbk3HWYHCINTI0_e5PR1-LAbc8z38A5iifT_oPrmzx3HxzBBMiZBr5DLVuzWIB_sA_qnVX9K-jIgWMZ7VL7p28HZ1W9npXmg0uD-DbfnpPphm1O81gEPITqnL-OpJd8f1uRBYVPHoQ9yesQMhWEd3ZErRiRMiUqQkXkXy9cPyagwuLe99MZ5wMPDb25VpqZLUZqDzSbjnDJJFkwj-3QcvKWlgHHB5TNc8ks13VSRnF-TeEc2zRkowaHp56p0bclrwxsHP4XUeKMRsdyelMWliVOaIB6Hsh_CmaZOY3n1zz1mFOBwc_bwX7JJVr2VQ588cPnVZ43YOAIhevfZlsz7mvGJVt9nxVtAweEeLQbUVPnDmhIfJLB_UngHTMNJNx2uJaZjs3A2kB1jC0eMd2BtjaCqppW_GXpzQeg3mnd-i_sxKCSOdgUqEMBzfq0ntneLYDsQfedCrqLqNQ4TKyR-bIbVQJKCxRMNQEr0PWQA_Lyy-BaUHsrJA6Eq55m0vhuo4dolXSfl2iGgwV_-JjS2uZB7Ix0Eo8xjC9Zf80lVXNwUN2LQgxZgfWNphc73cu8tkOjn1a9aSjChqeW7pA5JyDCKlt6kdcuDYvJv_6YW1ekA-hP8xDHPoakl3VD5lX-_BaWy0aHVoIyj2Nd-9JGMDhMplmfM6AtDQThEiHf9u2shSca9dPR6cLHird5F5AU5QAqDz-RBzxNbxg7B2YUd7iYlgDPzJrC9kXklTlaRLb-DyORXL8uIAWHb5LuWvFlLYrkETcQFCMNBk3w8JhW2ilL5Ie2ls_5QaLcuYqpW7Y8W9yFBUFcTHSD6pV7E4y8PAbhnFZ84SQIii5W4JT-bedOohE7HFGrjEQF83gfF5qtDmvENtcI-IwmEXiDrpm4-pAeygLG1M68xuHUtRtNMnBM4VPQvqmiQk0hkqGUtm_gjWKa9JYbZUqGgf98EFIZYsgpT_wVyHYGr519zadcvvcQ2wnIwVGIfUak23nbRzg_QOedU3TlJAPBKd4lUnnsoAYnUjpSXagOyYs-P1BWkiwGZcn33sh6iaBZtw4pGDj63NOAwUDRib1Nqtr6HU858gKh3Jc34-aNySLe6N34K-jEINM0nt_ny0cB_TeRXteoyOUIe53G9ghrF_OGZFT79x-bQIdGHcFxRaGbtRdO_XUHqFifsGnmjg0gUWFbs-qpgyJddVmRp0pDjj74F1jeYIEgi3LRT7KF55j4hyaTcT1XHYkNyRoMvIqtVT7SBHhxxynblf0sLgiMK5GhHPdmawcq1HSX3ihLDY629p9XX6hCJ4M90IQ-xexfcUXhGvD33hbNz0ZUCXVM5Vv4XMY0-Iti2ZX77KqLguTQr1f1baGLrNl1GN9rhkUJ-zPWUBqtimFPNdUKfMKtVPECbpu2-lYch0iP28u5waOT_t0HcX3HYZwfPeVrQgvnkOYaPSPkCqMZMhbTKkSCTLQ22tLaKQaozDLRjrCCJFN-TGmQtz0fn46FD5zIescj13rVj_z0hSZYEX9s4cwHaJ6uGvgipcvr2XYTmKVFBkU1-pBT06ZHbwC-GYSwxWzUdIogWzZ_W9LBQUYSSXuDZBb7WEf_NwzmGxS3JGsHQWKepxN6IG8MYNuy0FgqjgeK9Dwe0tsohywO8l7BeAOj3bUDKJHw-RaaB4zGUgO2DCRUPZTPtzrPKFRQtijryIWsHmGT-CrpjK6dtF8Vr0wJiv773hCVp0vvyX0XCfhEoxz0AKQd-zzdlsEKR9nGvMak0_vQQX-9TW6YHfrl4g3C4tLuXD9sKkBtnHzQHe7LAwn6e54flmBHKc50nw_3wmbT9A-vUPj7n9mBRUTdhD3La5uzVYmyNAVv1NRzLusEgq9erVC77KzGotuyFt1mRMJOc3xS1xzvQWuHc9nNfY2llHSCYxf0OB9ZgUFF0EoyxyXWfZDO_3yMJ9BePynlA0OokC-TMWTiTOwaMxteYIqGTro72x9eJ4HnjrWdSvmF7Bl2gKxbNnpcGk5FgJLE844mWDydTz72BaCZmP9lK0OF7x_kG70uokdnlLbY2GKETo949BIWVOHI4EM1G88xQ-rbMY0n2PP02dLGDoNbg3PFphS0F4DwvYbnUl8_bqHNiakRKJxxomRC45XzF9QiDoxP97qWmNEtSg" alt="Феи: Тайна зимнего леса">
+            <div class="movie-title">Феи: Тайна зимнего леса</div>
+            <a href="https://t.me/kinozimushka/178" target="_blank">Смотреть</a>
+        </div>
+        <!-- Add more movies here -->
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination" id="pagination-controls">
+        <button class="prev" onclick="changePage(-1)">Назад</button> <!-- Previous button -->
+        <span id="page-number">1</span> <!-- Current page number -->
+        <button class="next" onclick="changePage(1)">Вперёд</button> <!-- Next button -->
+    </div>
+    
+    <!-- List of Pages -->
+    <div class="page-list" id="page-list">
+        <!-- Page buttons will be dynamically added here -->
+    </div>
+
+
+    <script>
+        const movies = [
+            // Your list of movie blocks exactly as is
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/79d21c41-fd66-4d1a-8f3a-720d729463e5/orig", title: "12 месяцев. Новая сказка", link: "https://t.me/kinozimushka/154"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/33aea3ad-854d-4344-a1ea-2886910c3b80/orig", title: "12 подарков на Рождество", link: "https://t.me/kinozimushka/61"},
+            {img: "https://clck.ru/3F6agN", title: "12 стульев", link: "https://t.me/kinozimushka/36"},
+            {img: "https://clck.ru/3F6agD", title: "12 стульев", link: "https://t.me/kinozimushka/182"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1900788/0a04b206-e9f6-481b-bc2a-bf1df4eb70f7/orig", title: "8 женщин", link: "https://t.me/kinozimushka/59"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/c1453b97-3042-44eb-a744-b980b464de88/orig", title: "Ёлки", link: "https://t.me/kinozimushka/110"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/0523a7d2-b616-471d-b094-180310a37c69/orig", title: "Ёлки 2", link: "https://t.me/kinozimushka/111"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1704946/e96c026a-18f8-439b-b0d8-1df1dc15328c/orig", title: "Ёлки 3", link: "https://t.me/kinozimushka/112"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1629390/3417780a-ea55-496b-bdd7-7f16b23bc4f3/orig", title: "Ёлки 1914", link: "https://t.me/kinozimushka/113"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1898899/22c36bec-4e87-4d8e-899c-f8bc3a538862/orig", title: "Ёлки 5", link: "https://t.me/kinozimushka/114"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/67e98588-760e-4338-a500-197664f374c0/orig", title: "Ёлки новые", link: "https://t.me/kinozimushka/115"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1900788/0faed302-d331-4943-a429-1a3a8557e67e/orig", title: "Ёлки последние", link: "https://t.me/kinozimushka/116"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4774061/fef26a9b-c8db-46d0-ae19-d6b0795f0c4e/orig", title: "Ёлки 8", link: "https://t.me/kinozimushka/117"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1898899/5a566192-735b-46e7-9f15-291dcb088863/orig", title: "Ёлки 9", link: "https://t.me/kinozimushka/118"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/10893610/88c05686-2fcc-4651-9711-4dd622f65196/orig", title: "Ёлки 10", link: "https://t.me/kinozimushka/137"},
+            {img: "https://clck.ru/3F6azp", title: "Баба Мороз и тайна Нового года", link: "https://t.me/kinozimushka/33"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1600647/eedb72ba-ba20-486d-ba9e-1462538ac58d/orig", title: "Бабуся", link: "https://t.me/kinozimushka/28"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/9784475/8fa6cb61-df72-422a-8ee5-7a6b68ab9063/orig", title: "Бесстрашные летуны", link: "https://t.me/kinozimushka/41"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4774061/a1a915e5-9874-4591-91c8-0ad2d356af11/orig", title: "Быть", link: "https://t.me/kinozimushka/78"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/6ed7202a-72d8-4225-a7ac-a0d46a5514a9/orig", title: "Величайший шоумен", link: "https://t.me/kinozimushka/55"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1946459/159718ab-4670-4ea4-8a87-4348ae06b9d6/orig", title: "Вечера на хуторе близ Диканьки", link: "https://t.me/kinozimushka/105"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1600647/87b653ed-bd41-4f75-8404-b5e271873e8a/orig", title: "Вечера на хуторе близ Диканьки", link: "https://t.me/kinozimushka/123"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/1a7a8f0e-7b33-497a-a0b0-c2a9e4153f34/orig", title: "Вовка в Тридевятом царстве", link: "https://t.me/kinozimushka/48"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/10893610/7b8a0aa1-204c-4bbc-8196-cf326469cb48/orig", title: "Вовка и зима в Тридевятом царстве", link: "https://t.me/kinozimushka/49"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/6201401/4ed85404-890f-4696-830c-6276acf9a150/orig", title: "Волшебная сказка на Рождество", link: "https://t.me/kinozimushka/35"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/4b96b55d-b619-442c-866b-48e9998cfcf8/orig", title: "Ворчун", link: "https://t.me/kinozimushka/92"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1629390/730b85a2-2c98-452f-b6fd-dadb085d5635/orig", title: "Все ждут Рождество: Люси против Крампуса", link: "https://t.me/kinozimushka/107"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1946459/b4b53350-dde8-4f94-b6e7-0ed8fec65996/orig", title: "Все ждут Рождество 2: Люси и магический кристалл", link: "https://t.me/kinozimushka/108"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/6201401/ce6ad643-b4f3-4d62-b2cb-f9a000efdfc3/orig", title: "Магическая машина времени", link: "https://t.me/kinozimushka/109"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4483445/80af6ee3-e0e5-4e43-822a-ea89ea6ac957/orig", title: "Всё хорошо", link: "https://t.me/kinozimushka/88"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1898899/27ed5c19-a045-49dd-8624-5f629c5d96e0/orig", title: "Гарри Поттер и философский камень", link: "https://t.me/kinozimushka/140"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4774061/1ef65bfb-b16b-42aa-a54a-758395253290/orig", title: "Гарри Поттер и Тайная комната", link: "https://t.me/kinozimushka/141"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4303601/3eabac99-fb98-4b12-ba9f-6172782d54c6/orig", title: "Гарри Поттер и узник Азкабана", link: "https://t.me/kinozimushka/142"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4303601/672269af-efcb-41c3-85b4-e9ce87f1ea02/orig", title: "Гарри Поттер и Кубок огня", link: "https://t.me/kinozimushka/143"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4303601/1c8e7019-20c6-4bfb-ad17-6b7746ca5147/orig", title: "Гарри Поттер и Орден Феникса", link: "https://t.me/kinozimushka/144"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4774061/3b4b90e6-0b62-410c-a583-6977df318fbe/orig", title: "Гарри Поттер и Принц-полукровка", link: "https://t.me/kinozimushka/145"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/6201401/66852969-2d21-45de-bae1-62ec7760f756/orig", title: "Гарри Поттер и Дары Смерти: Часть I", link: "https://t.me/kinozimushka/146"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4303601/82b5cc4a-18c7-4180-a98a-0c96528d63dd/orig", title: "Гарри Поттер и Дары Смерти: Часть II", link: "https://t.me/kinozimushka/147"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1946459/12e1f392-6df1-4a91-827a-763ac547adb4/orig", title: "Гринч — похититель Рождества", link: "https://t.me/kinozimushka/104"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4303601/e3163c1e-f5cc-431f-b5e6-a9d65ae45b2f/orig", title: "Гринч", link: "https://t.me/kinozimushka/170"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/6201401/35141703-9497-499f-8ce5-edcbc8c98c2a/orig", title: "Девушка с косой", link: "https://t.me/kinozimushka/44"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1600647/69536e92-3e2b-4696-a5c7-d68a98ab4291/orig", title: "Дед Мороз. Битва Магов", link: "https://t.me/kinozimushka/131"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1600647/fde346cc-1063-41f5-a32a-96996adc6996/orig", title: "Дерево желаний", link: "https://t.me/kinozimushka/125"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/10835644/5edd5e70-3e79-40cb-86b5-cd5d8a83dfb7/orig", title: "Джинн", link: "https://t.me/kinozimushka/121"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1704946/78221e5b-81fe-4e05-aa5f-4649ed909e2f/orig", title: "Добро пожаловать или соседям вход воспрещён", link: "https://t.me/kinozimushka/63"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1898899/e563ce1c-efa7-4c08-b35e-afe37da83eff/orig", title: "Духи Рождества", link: "https://t.me/kinozimushka/122"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/49c20d56-8466-4fdf-8fb5-133ff673d8bb/orig", title: "Дядюшка Ау в городе", link: "https://t.me/kinozimushka/138"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1704946/23b79e0e-64d3-4b57-8638-d7d7ded55814/orig", title: "Каникулы в Простоквашино", link: "https://t.me/kinozimushka/148"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1629390/9b6cd3e3-7ba2-4fbb-a268-3c8cad291eb5/orig", title: "Зима в Простоквашино", link: "https://t.me/kinozimushka/149"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/10812607/edccbd16-afb5-4ebb-b707-a89a404e64a8/orig", title: "Зимние каникулы: Страна эльфов", link: "https://t.me/kinozimushka/52"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/10809116/62a63ce5-056e-4193-ad97-fa6d52ecdad9/orig", title: "Зимние каникулы: Магический отель", link: "https://t.me/kinozimushka/53"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/6201401/a7ef44b8-1983-4992-a889-da6f87a3f559/orig", title: "Иван Васильевич меняет профессию", link: "https://t.me/kinozimushka/162"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/9784475/0d357941-77df-4aa2-b1b0-0f608887a2b9/orig", title: "Иван Васильевич меняет всё", link: "https://t.me/kinozimushka/167"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1704946/9ba8e12c-ab68-4ec5-83e1-f6f8d787700c/orig", title: "Ирония судьбы, или С лёгким паром!", link: "https://t.me/kinozimushka/160"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/19fc318b-d9db-442d-a6f7-5daac115b12c/orig", title: "Ирония судьбы. Продолжение", link: "https://t.me/kinozimushka/136"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4483445/1345c455-14f7-4981-980e-56aac8b6c2e9/orig", title: "Ирония судьбы в Голливуде", link: "https://t.me/kinozimushka/156"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1946459/f1a9f067-a432-4665-86f7-bfdcda8df8b7/orig", title: "Карнавальная ночь", link: "https://t.me/kinozimushka/67"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1600647/fbcf8390-c6d4-4c45-b239-f5d6fbec3d91/orig", title: "Карнавальная ночь 2", link: "https://t.me/kinozimushka/68"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1629390/e8064e82-3842-4987-9ed8-859d2cf1a782/orig", title: "Комета Галлея", link: "https://t.me/kinozimushka/89"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/10703859/b13f202e-1059-4d98-9022-a91d16f587e5/orig", title: "Корпорация Морозов", link: "https://t.me/kinozimushka/152"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1777765/ead2583e-8997-4ca0-9d48-b4327f66381e/orig", title: "Красавица и чудовище: Чудесное Рождество", link: "https://t.me/kinozimushka/74"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4774061/bc5d51ec-27d6-4297-abc1-53d86cf8a459/orig", title: "Ледниковый период: Гигантское Рождество", link: "https://t.me/kinozimushka/168"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/4c36aebf-9fb1-47cf-b1d5-90e916d0314b/orig", title: "Любовь и голуби", link: "https://t.me/kinozimushka/80"},
+            {img: "https://clck.ru/3F6aSg", title: "Маленькие женщины", link: "https://t.me/kinozimushka/180"},
+            {img: "https://clck.ru/3F6aTG", title: "Маленькие мужчины", link: "https://t.me/kinozimushka/181"},
+            {img: "https://clck.ru/3F6ada", title: "Маленькие женщины", link: "https://t.me/kinozimushka/175"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4774061/f6e389ae-a9ac-477c-a769-b02ddb0cf3ec/orig", title: "Маленькие женщины", link: "https://t.me/kinozimushka/173"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4774061/fd23e643-2ee0-4e31-ba6a-8c1960b695e8/orig", title: "Мальчик по имени Рождество", link: "https://t.me/kinozimushka/119"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/10809116/5478299a-5e94-4111-b60e-5a7ca1bdea2e/orig", title: "Манюня: Новогодние приключения", link: "https://t.me/kinozimushka/132"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/10835644/0e229fd4-4ce8-4c1a-85ef-daeae1754445/orig", title: "Маша и Медведь: 12 месяцев", link: "https://t.me/kinozimushka/139"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/10703859/e0f71928-fcf8-46b7-a645-b035bf261719/orig", title: "Миссия: Красный", link: "https://t.me/kinozimushka/126"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/e2865fbf-31d8-45f5-b147-0eff7820e189/orig", title: "Мистер Джангл и рождественское путешествие", link: "https://t.me/kinozimushka/155"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1773646/b2999096-6f93-47bb-bf39-281934f5ab07/orig", title: "Моя мама Снегурочка", link: "https://t.me/kinozimushka/85"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/10671298/bcc33c02-25ce-4477-b352-06a1cadc6073/orig", title: "Настоящий Дед Мороз", link: "https://t.me/kinozimushka/62"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4486362/74e6af5b-1943-429c-b823-f985e2b69515/orig", title: "Не одна дома", link: "https://t.me/kinozimushka/30"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1600647/0d5abaef-ef9d-4782-ac00-88338f67149d/orig", title: "Необыкновенная история на Рождество", link: "https://t.me/kinozimushka/106"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1946459/3eca1863-7d93-4c57-b1d4-4d34f7169e19/orig", title: "Нико: Путь к звёздам", link: "https://t.me/kinozimushka/150"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1600647/cf2325f5-ae28-4817-b8e9-818faeba513a/orig", title: "Нико 2", link: "https://t.me/kinozimushka/124"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/9784475/37954f1f-2824-4044-b956-6903283bbc83/orig", title: "Новогодние приключения Маши и Вити", link: "https://t.me/kinozimushka/128"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/10812607/def6340a-997b-4a37-969a-b03d5604be06/orig", title: "Новогодний ол инклюзив", link: "https://t.me/kinozimushka/42"},
+            {img: "https://kinopoisk-ru.clstorage.net/170UEd079/9ed200dM7pC/axNtvZVBCGfWIH6Ta4DnCe-wRKBv2zaX02JJP03OaHxaLe-k-E9dnf0cHxZPk4eE0QDpW-M4XPG3Xde0G7TpUv6W7OpRxp8wgactxXxA5xt9cwSlvIkjhJS0jXMBwiP2kSTwbPLFV9lrDZrAmcXSVsEU-MwwPE1q-N6Cq0OmPw2mE6H0GFnGqhb38Z9sh-BDfzAGp7Kf8l9FawH5BIEmPBXhPC75R1rd741EC5-KmphPU7RI63lKb3MMB-wDKXHOo9QndxgeSeCR9_aRJoqoBXp3SKA0lzrZxWbPdoLCJrVdYTjkM0xR3yVFwIeSzh3cT5W5jm-2zii_Q85mRCL7CWFV7P8U2E8imrt02mtCL4V5OouotVA7kEIpgvXDCGA6lyt_p7AL2ZWuSsoH14XR3oqWeMfrNUYnukCNo4ZisUWnlKxwkJvBoFI_NpZhjK4JfTdPaDgathkNqAZ-gIlmPpdrfaVxTdgRYIELS95L21dKm3hFJ_1BIHPPQ29IoPCDadYu_5SSSiif93SaJkCvwXj5zq2ymTUQhCjF_ASC5nUTIjBssg6aFeJGTw4bThuaQppyhyNwAyZzSw9uAyQ6xOGXK71YUkjqW_24GSBLJMW5-wthvtt9mkqsjzGIg2q_XKS9bb4PWRVsycpA003bWMfXcMCqM4EkesIDYU9r_o2iGGEzklmO7Rj2OR0tSS8M_7ZEJzcXNhcI7I61hUIntRzssqw3i9IXoIxPAZFC2RGCHzyH6DrIq35FAO4NYvnNYBakMBeeymjSuL3fbokqxH16DOexkXmUxCIK9ULParRbp_RsMcrQGiSNwYfWh9XeRJp1wqX5ya17iMBrTqT0TqAd7nFbGkkuX3j6V2vPYAy29w-osRc0kkOqzTSDAu79HWI463oNX1QqjknDGYgZVk_cMEfhsYLoN4dILgzseURuXW810lQIJppwMt5kBKyJv_3LpfcXet5A7s_6ygivtZhruq39BloeqwPCRBdF0dpI1jjLazJC7PwGx2NEpnCKbVJrtJWTyeSRODZarYdoDTh-wOW-33zfwuhOdQJGo_oQ4nEns4FR3WvCAk_VAlWcRF9_jWMyDeX-hYYjxyN_juccL3Vfmcig1PD7FWtNIApxuAQt_tE0kkNjQv0Ajqp6Gu-9ojmNVhQiRkLHHYaSW0YbNcslPkyuuU9Kao_jcsmmVyY1EdIALxCzcJjrgOUNcbCHqH3av1GM6UCyhMftvpehtKj3iRzQo41ESRgMVFlLH3eKI3yEpjfFSGEGIj_Br5-tONIQA-KXen7Z7ceiQr5zg6s6kDaZjCnHfwfML77bb3ggsAfclyUEy0aZhNEcwN9yg6g5DGyzBYAjy-n4hqYaLrFYlIVnV_u9m6pIZ8-6Pchot5c93ojgzvVKDCkz1-Z2qjHPX12sisJJXQdbFwidfw-re4phNIjH6QJrek3uX2ew3N4IrFmx8V6tT2xNfLdGJfSe8hiJKYexBsgrNtit8Sv4hJCV5IWExlkNnRyEUjnEqzHMpvZKyOhE5b_NbVQoNdEUgKUeO33WIcslhXb7SGD0Vn9QCGmNf4TJ4LwVITWj9g6SGSeJi0xeSBwYylp_BKawTiy_SMohz-L8CecaIDPdGgmukn58H-wKqMW1MQHv8Fk-GcGsz7ZPhOHy02l36_kH3xinCkfMW0VQ3I_UOkprO80utkvFoIyqe4XhnuNymheI7lu7M1cmD2jOtjeA5jCRMVFAZQAyjAnicxQr9-zxyxCVLkOPRxlKE1AMn3BMI_MB6XwMBeJHILfNYFgmuFcRD26eOHmaogrjgvpxRqZ2X_XSBm0N9kpEbnJebfGtN4Uf2eyNQsGRxx1ajhp2Q6B1zGw2zMYjyyr0imVeLLHc0IejX_W5EqjHYMQ_sEtttJRyV8Ykg7YMQy07mikxb_DJEl3uRQRM1QBUWkTceENhO0DjugqFLAwss4Wl06f9nJDIZNA-s9AuAm4NMrdNZzGae1HAYoI3y4dn-9OhN602zZ2V6s3AyxcGm1_P2z3FqfHOJbvEzmqLqrpE7lfrvBIfSeTZvfwX4sAnQ7Z-g6Z5XzdYQmWId0aDrbZUIj_ueMdV1i8LQgHXDp1fyxC3zyr7gOu5AIlnDSR0DevfZbwfm0mqU_n91qHIKwT-MY1m91A9XMikjfKCz6J9WyGxIv5DUtIlwIMAUQ7ZXIZVcYjtvkhk_8LPJoOldA9m1u50VFHLZlM_tlashC9McHZAYbzf9BpEYscwxc_oftTlP221A9ce5EsIQVWDk18D17iFbfWBYPSIwePHbPpCaZ-rvVOYi6hTP36XYY_ozfUxgKX-ETNTTWVHNg7A7z3crnaq9oVWXeLNjM-Zz1oZQdr4TyJ0QaY7y8EqTmK8Q-la7b0U18htVnr82WwC74x5MgxgNFR7X06lxnLFxyA4WGP_Lv9L0FkvCkpC1kxXEcAStQ9hcAUk-QjCYIos8kegVW592JFG7dE7OxntDWjCuroH5TdTcpOA48J8DoCl_51itCK3h5ccJIJFQxsD2BKHH3bD4nEN67KMDmuPLHuBaBKgsdNeziYaOjhf7Mdth7owB2g1HjGaCSzCeE6HavdepbQgvYmZnSyFAo_SS5UQCFc1h6DzAG57xkJhzSjxA-ifpr1ZE8YlGHe00aDCbwS5ukmg-Bz8lokmgTCDDGF8H60_5bUKGdXqTMwO3gwU1gMcuMpm8UGm_IcO7EPrvwttGyuwH5BJoJb4_J7mROBMdPiOZzKcdlkN4op4xkOq9x9ufmKwTJCZ5wiDC96CGJSHnD5MrbTIrDaMj-4FZPrLKlUosNxYBqKf9XSX5kqkSbx9R2zxFj2SQmWKtYrPY_VYqj0sOcuXGOXIgsNbRVUTylf3TOl4DqR7wkFnTKjyi6CX7DRXEwDvUj94H6QHr413MMeoupg0EcIlw7BAQSI9EiG0aztOnN8iicBB2I3dUMvc_0tjecWv-o", title: "Новогодний сборник советских мультфильмов", link: "https://t.me/kinozimushka/90"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/10835644/a37e7781-15e9-4b0f-bd49-fa4aea45da19/orig", title: "Новогодний шеф", link: "https://t.me/kinozimushka/79"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/6201401/022a58e3-5b9b-411b-bfb3-09fedb700401/orig", title: "Один дома", link: "https://t.me/kinozimushka/95"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/e87b5842-3065-422e-81e8-59a1ffcd9b6a/orig", title: "Один дома 2: Затерянный в Нью-Йорке", link: "https://t.me/kinozimushka/96"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4774061/e3ace94b-e349-4451-a24b-8b4066a46ab6/orig", title: "Один дома 3", link: "https://t.me/kinozimushka/97"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4774061/9085d7e4-6631-4d27-ad72-7c0306c17aca/orig", title: "Один дома 4", link: "https://t.me/kinozimushka/98"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/6201401/73475e06-03b1-4ce5-b44b-2cc1d5acdd31/orig", title: "Один дома 5: Праздничное ограбление", link: "https://t.me/kinozimushka/99"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1898899/195d6b79-a0e2-4c74-bc29-ac62152c6bfc/orig", title: "Одна дома", link: "https://t.me/kinozimushka/133"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4303601/fb4e551f-3430-471e-9667-2b7edef12ede/orig", title: "Олаф и холодное приключение", link: "https://t.me/kinozimushka/73"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/6201401/8c695c58-a80a-4da8-b2a0-43fac43f95dd/orig", title: "Оливье", link: "https://t.me/kinozimushka/76"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4774061/ccd69a69-7405-4b41-89a8-60dd6dc2a3ee/orig", title: "Операция «Ы» и другие приключения Шурика", link: "https://t.me/kinozimushka/163"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1777765/185b0c9f-d07a-4529-b023-cdb20eceb18a/orig", title: "Отпуск по обмену", link: "https://t.me/kinozimushka/100"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1704946/a9b8240d-4502-490a-b4d8-4bce7b5d2ac4/orig", title: "Полярный экспресс", link: "https://t.me/kinozimushka/93"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/8fa54224-6c75-4d36-bc4e-bd894b31648e/orig", title: "Праздник", link: "https://t.me/kinozimushka/153"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1898899/cdca2aed-0966-464a-b82d-b44f5603be51/orig", title: "Приходи на меня посмотреть", link: "https://t.me/kinozimushka/84"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/9131f77a-8f8c-4ac7-8df0-848a6970c713/orig", title: "Пусть идёт снег", link: "https://t.me/kinozimushka/70"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4483445/b1d2f164-a2cc-412f-9702-ceb73b4a5551/orig", title: "Путеводная звезда", link: "https://t.me/kinozimushka/102"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1773646/1d0931b4-e23c-495a-9ef8-a87c40f6a4ef/orig", title: "Путешествие к Рождественской звезде", link: "https://t.me/kinozimushka/165"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1600647/ceb03f1a-1140-45ba-a48a-27b2252a82ea/orig", title: "Рождественская история", link: "https://t.me/kinozimushka/32"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/e773c2ef-9608-4085-8402-27d17165a353/orig", title: "Рождественская история", link: "https://t.me/kinozimushka/161"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/a860c14c-ef9a-445c-ac5e-eafed6d45585/orig", title: "Рождественская свеча", link: "https://t.me/kinozimushka/169"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1773646/c5d96751-35fa-4dab-9f72-697aacb04b45/orig", title: "Рождественские хроники", link: "https://t.me/kinozimushka/65"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1600647/b9b8268c-94e4-442c-afd6-ffde99426c76/orig", title: "Рождественские хроники 2", link: "https://t.me/kinozimushka/66"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1629390/d82b3d42-64ab-42e5-b02e-42cc3f87b7cd/orig", title: "Рождественское приключение Бетховена", link: "https://t.me/kinozimushka/120"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/9784475/159870b2-9fe6-48aa-96e2-bc57bb453bd5/orig", title: "Рождество в городе мастеров", link: "https://t.me/kinozimushka/46"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/ed22f4ca-eecc-401a-99d4-8504e9e7d9ac/orig", title: "Рождество на двоих", link: "https://t.me/kinozimushka/101"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1777765/97a3483b-9740-43ea-96e3-580c5ea45a57/orig", title: "Рождество на льду", link: "https://t.me/kinozimushka/58"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4303601/d3aa2a2b-5947-43da-8669-688770c2c1b6/orig", title: "Рождество, опять", link: "https://t.me/kinozimushka/54"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1629390/9f39233d-a360-439d-a330-41216b23e918/orig", title: "Самое первое Рождество", link: "https://t.me/kinozimushka/45"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1773646/d3b20e57-76d8-4472-a927-1dc050710de2/orig", title: "Санта и компания", link: "https://t.me/kinozimushka/47"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/10893610/a6de7305-d99f-4013-a7f5-084bc4de95e4/orig", title: "Секретарь Деда Мороза", link: "https://t.me/kinozimushka/134"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4716873/b19fcaf1-a71d-4685-9ec9-5f049a112425/orig", title: "Семьянин", link: "https://t.me/kinozimushka/56"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/6201401/0edeabed-a1bb-4d1d-b761-19a6c8ea5683/orig", title: "Серебряные коньки", link: "https://t.me/kinozimushka/43"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1777765/52149cdd-b01e-4dcf-8957-9182b0a6257a/orig", title: "Сирота казанская", link: "https://t.me/kinozimushka/82"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1777765/fd4e75bb-a6fe-46ef-86cd-0f470334fcbd/orig", title: "Служебный роман", link: "https://t.me/kinozimushka/81"},
+            {img: "https://kinopoisk-ru.clstorage.net/170UEd079/9ed200dM7pC/axNtvZVBCGfWIH6Ta4DnCe-wRKBv2zaX02JJP03OaHxaLe-k-E9dnf0dXZZPU8WGkQNpWiP53KQi3de2G7UpUv8CeapREx1nwbMshnyA5s9psxPzKYkjBtQmnmmaBaR2VqezLXeFVZblTYyHiAST0UESv8ynehuhskFMcg_pN0GuXCC83Z-C7Z9_PNchTaLJ-j9G5r9YOVfFrQ43RI-hNVNtN-i7x14U6EkIB1bPlZ4J3DGL6_7A5LVEx6CKrnfO4J8le1scgqoQNbvXJkPoxLJ5Q6HxX79fDSuOOooAJ3ZT5H9ovw2UH-NLws_SQ5jajpgxTeY4RCsxAwvvQyQwxWpY5_qQlI5sFvewm6QIpQw1-UDsMlc-mAxiCXXHg2a8FWu1IvhOF1hrAUnA2MPdkUKa9E4nccCouQwO7ADh8oUgFCE70BsKL5h1eB_mRK_CtHVE4faXs9KB60b0QwglPRNvtWL6TNYeaoWHCxmP1F9IEzRDJ_MMYL4Lx2POLTxHYdLveVKUDiYT_bXXpEjoDrW9QS93UjlRAuLPdICKoTaTJDErt4UVXSiBBcxdyhFaiN48Qi0xCO38Dcfngix3w6uVZzhX1sLmET9x3WjL7gU-uYAtsp41E0poAfDKRy03H-5-rTqEGVzrgYtD2ITZWUgcuQ8vdoGufg_Obo4jO4xv3CS3HVgI7dc4Mtbpz-MHNXDGYP3YvN8B5UOwy8Mg9lLkPuU1RZDYYINHBl3Fm1ZKVfzHYzHDpzeAyumNrHmFaJzmudhbjSqTvfiYbQ2gxzC4RKy1GDpZTmaPfk-D53sf5Xmuc4WWmWKOwwfTQ9yTRpo6Qip0jmQ2hs8kTSk6Q2UfJrKSGsGuEPt1WCqFpYF6cI8htlc63wNgCPaIQia2m6w_a78C3V7twM0EWwcTnIoSMQRv8cosfcODK8VseAvoFejyE15I4FHzsFDiDKpKtvWGK3JafN9NLAuyioxvvNrkumI9RFpV6IpMidCAHVFCnjYOZ31Ar73HSKpKITBB4dvr_RffDyeQMbsY5ohjyXJxAah5GjUXSy2JtAsDp_LWqzLr9s4U0uNJjEgQi98Wxtg6hyA7SK_yzkopC2GzxO7fYbNTHsUtkXX-0CvHpQM6dkhuvdJ1GQNgCD8Hi6U63ys45jpLnt7kgMXMUAMXkgEfOMNqfQ6js4UN48co-wTjmCD4Wl6LZln6OpOgSiXO_3FIZj5X9hKIo8e1BcQhc5jvtagzQVDarkREB1aNEhjHHTXHKDwI4XuNg2nFI3LFrpApMNFTSKRaN71argsjibg-h6U6VLFYAWvHdYIJonha7_lm_8kXVG4Dwo7ZgpOQQli-By01g6TzRwepDWG_DmnXILVS2sIg3LJ9221JZAZ9s4PrcZc8Xwosw7yLg--4XGL17_FDlpztyUsA0I1XE8hTdkUguYDmdUqAJEqrdozrHGjwG9tGalF5c5EhjGMBdjFFYf_af1bF6sJ1wsejfF5n-qR2wl_XIgEDD5YCUxkOWPqKZnKArDONQuZFqjACLpzr-1ReS6DZcDQbrQTvhT_5Ty3xn3-eSKJDNcgJIX2V7TcoskpRXSCNwAOZiFRcj1y0giCyjS2xBwvkR2O7BW1YYbVcWEeuUHu4XqzNIkSyuYznuBB7kQnrivCKwOowlKPxYPACXlRtjECAVQhRUcOY8Qxl_ECmMgUC50ji-E3q1GcxnxkAo9E7cZvjhehBcrKP4TkZu1kGows5RUQpvZciNiJwBVaYogHJyZ2DE16AFHJHL_oIbv7CyKCIoDPHJpzm91rTzaVWu7QYqUhsRPn-w6f_Wf2XwiBNMUiA7_AbI3xkdkSQ1q1NCwdQBZvTjh7wwin1i-gzR4JgS2G_zWXb4_FQ2kZk3nZ11WnAZol6uAZm8pI_XEWljXjGwKn3WGq4ILaGV5qgyQnPFojfFMceOgQn9Uqmv8gOpghueMsi1CN825YGJJGx-h5jAuBMdHELYfSYulJMo4s-x0FuMxKq8aiwRJGeLwENR9IPHRIIG7EDYnOCbDEOD2hDKP9NKxVo-JfXiKsQMfOdLMUsjj0_j6g6WfKXAKoJOc0B4zfY53YruAfflOdCyIFQxd0aDhu1yOh5AWZ_wA2sBCV5w-VcbXAZ14UvEH952S0Eb4YxeMfnNJl8mAqug_jIhCd71yx5KDbLWRDgRsJKkcRbGkoY-I0uPsYjt09LbkJk90LlXuB5kh_O5ZKzeR9mhGLKNTBJoPmeNxfD6A8-gkZge50v9uy4hBJQZYoDwRqFX5cAG30P5zNGaH5LQCRMobOLaxPvMNfWySzSfXkfrkWvwfKxzOc5WnXZBKEGOQJAq3SabP6n8UNR1uTJBUeeC5PbyV0_Aqf5Cem-jY9nTGg6hS0Sb_WR1o5jkbh8WiwLokz18EDktZ-_nEytBfmDBGBzVWl6anjHWBhizciAWIbcWMRVvsrquUrt-g9NpE8i_stjFib6EhZCJR84-xvryyNDcr6DbL4avJtFYcu_hwqrNNCuv2szyxDUJYjDCFeHERdLVvnHKXXJ7PLABiCDKfvL6tDuvdzaSeqX8zAa6I0iiXf7g-a-l77WBmhCcIcO6zMfpnysM8ka2isJyw8QS9hfBlR2j2oxi27_Rc9qzyO5z2BSbjDa1sOnn_AyV2QDbox1eIBs8F9z1MtkwnrERia4FC09pLgMElmrQQ3G3srUGIeSfcTnfE1svo1IK4OuNwwuWuu0V9uFJBB1vNgsTCgK-jBNLjeYuVRBq0a-zw5j99-mPWf5ixcfIg0AgpHP1JaL0PlEYfqGKTeHgiACrHGDa5qs-lTbRuxfd7XVpEUoBL41hav-k3reCmAJOc_DL3sWpHqjusWemCWMAkKQB1FRxle0j6j6wuXxj89uzCU4T2PaJjiQX82nWTp4H6jNakm18U7mflcxUAPjiXmGxuX1V2wwKDOCnB0uS8UD0oXSmU4UtQSg_UjkOo", title: "Смешарики. Новогодние серии", link: "https://t.me/kinozimushka/129"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1704946/6ecd3a7f-bdf2-432a-ba0e-5d36430ce046/orig", title: "Снегурочку вызывали?", link: "https://t.me/kinozimushka/83"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/9784475/357f4de1-4dca-4674-8800-b7415fa8403f/orig", title: "Снежная королева", link: "https://t.me/kinozimushka/164"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/ac3db5d0-f54c-4b80-90b5-b71befbe29ba/orig", title: "Снежная сказка", link: "https://t.me/kinozimushka/72"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1600647/b35ffa08-2dee-4623-b39d-aee0c16bcaaf/orig", title: "Снежные псы", link: "https://t.me/kinozimushka/71"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1946459/d0f05061-6a94-45ac-a8cf-8fac082c977c/orig", title: "Со мною вот что происходит", link: "https://t.me/kinozimushka/57"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4486454/adae2892-0c9c-4916-a558-ccc5c6b82e8a/orig", title: "Старушки в снегах", link: "https://t.me/kinozimushka/31"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1946459/00dedd88-d9f9-4f19-a205-c929c2b5a15f/orig", title: "Стойкий оловянный солдатик", link: "https://t.me/kinozimushka/29"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1900788/18cd432a-5f73-4fd9-91ae-f649a2d35db3/orig", title: "Страна ОЗ", link: "https://t.me/kinozimushka/135"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1773646/af32a86b-5c65-49fe-a19d-be382768bca8/orig", title: "Страна хороших деточек", link: "https://t.me/kinozimushka/151"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/27541f3f-9b39-40f3-8fb7-5fd6300f1c58/orig", title: "Странное Рождество", link: "https://t.me/kinozimushka/91"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/00fae494-4f60-4d64-bc81-82c769ecc693/orig", title: "Счастливого Рождества", link: "https://t.me/kinozimushka/60"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1704946/2035516c-7e05-4089-b2ac-2d5f82efe343/orig", title: "Счастье в конверте", link: "https://t.me/kinozimushka/86"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1629390/c78c78a4-41cf-46ac-ba1f-e1a3d3b22d43/orig", title: "Тайна", link: "https://t.me/kinozimushka/77"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1629390/a7996f83-7a33-43aa-af16-6a26f8b3458d/orig", title: "Такси 3", link: "https://t.me/kinozimushka/103"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/10812607/54c216dc-2188-4baf-b744-2e726ed9ed47/orig", title: "Тем Рождеством", link: "https://t.me/kinozimushka/51"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/b3aa3ef2-cc13-4ae5-81a5-0ece9f689f5a/orig", title: "Три богатыря и принцесса Египта", link: "https://t.me/kinozimushka/127"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4774061/503c1b44-257a-4070-a74f-077e281a2344/orig", title: "Три мудреца против Санты", link: "https://t.me/kinozimushka/40"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1629390/4f54fb71-a509-4c8f-9a02-b2b785ea37dd/orig", title: "Хороший доктор", link: "https://t.me/kinozimushka/34"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/c6d5650b-1c39-4946-86f8-460220ee1949/orig", title: "Хранители снов", link: "https://t.me/kinozimushka/171"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1704946/dc10ecc5-a684-4586-bdb3-ed8e589df877/orig", title: "Чародеи", link: "https://t.me/kinozimushka/64"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/6201401/775c2a46-c6a1-488c-8f08-b5d0141c4102/orig", title: "Чук и Гек. Большое приключение", link: "https://t.me/kinozimushka/130"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1629390/6a188b5e-dcc6-41f5-a240-2e11d9980cd9/orig", title: "Щелкунчик", link: "https://t.me/kinozimushka/158"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1629390/0755389d-393c-4214-aaa1-86909604be5a/orig", title: "Щелкунчик и Крысиный король", link: "https://t.me/kinozimushka/159"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/1599028/b5374dfd-4768-432c-8526-d21d2cc00e43/orig", title: "Щелкунчик и четыре королевства", link: "https://t.me/kinozimushka/94"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/4716873/223098e4-a28c-4e9f-aa7b-8815291a83f1/orig", title: "Щелкунчики", link: "https://t.me/kinozimushka/50"},
+            {img: "https://image.openmoviedb.com/kinopoisk-images/10893610/c763cab4-ee73-449a-9717-701052dfbffb/orig", title: "Эта замечательная жизнь", link: "https://t.me/kinozimushka/69"},
+            {img: "https://kinopoisk-ru.clstorage.net/1K43Ns281/0c16aaInzx/NbhT9wmFC8TBZBI3EDpmB_lwj3_XCzHUxVSmTlv0so0yD6IAnWjsv6F2yjSPMgfUTHA_rLw4bAmUfctN2GhkvXftFK9WzhObxzpdeEMxNwHka4MikRZ5goFJtRMAq529Gj2LcrtXxJ-NF4x1yiVfhBIwLvXhemUSgz-5K51-Hds6oU_ZLqdD_OlwaDsJFUAxzDSjQ8lOJ-HCO5xGRd-hgygKk3yHafmRoDGpcuVObKU6LDTQ2G9EaLQnoCbVfyP1GY9y4AieZ-bmZnokAyJQGtYXgEz3URHc9RynU0Ddu6ofL4p7kGf9v6I4kE3aT36cDzsOy-dkfFadAoAT70QGxC-Ids4NunXq9kdTNyQQQRX5GIpw9Wgb-tIAtERP9oaACgaDSJBf6ryTFZ9T7Hh2hToQJMDbbUR9oB6fPct5GvQ3vHbYIYJQ4PNRfhwJA2YQ7iaVecxLMPLADYlDTO-NhT83u1-CfNeBqw-cWNNifoMpCTrs601kW4cHkB7HSAbiALxF3C-8f8vLb1MAAz9EJPgLtnHkSzvp2TS4S0f-lYApDoZfjVHDgogBkXvsYWCeCC4v-_JkfF29IYQfxGcn1w-_f9kWpmLHwGFYDzg1VQDUMItP7UUSy_k4h0Z44YmaEwmkaZF975WeHJp7y0dNpi4MFuDrYGx3qR-IHMhiJ8EKmmPOKbtk3uJFay8ZJHE79Qu2VuliEevkGptQUtWotAMvqHujXeK_rTOBZvFkWLs-Chfw8ERkV7cwih_PfSnjBapsxjm-S8_PVlEPIx1oNNEHq1XEUTn35g-mZn_JjYo0MLhfgXHkubQbk3HWYHCINTI0_e5PR1-LAbc8z38A5iifT_oPrmzx3HxzBBMiZBr5DLVuzWIB_sA_qnVX9K-jIgWMZ7VL7p28HZ1W9npXmg0uD-DbfnpPphm1O81gEPITqnL-OpJd8f1uRBYVPHoQ9yesQMhWEd3ZErRiRMiUqQkXkXy9cPyagwuLe99MZ5wMPDb25VpqZLUZqDzSbjnDJJFkwj-3QcvKWlgHHB5TNc8ks13VSRnF-TeEc2zRkowaHp56p0bclrwxsHP4XUeKMRsdyelMWliVOaIB6Hsh_CmaZOY3n1zz1mFOBwc_bwX7JJVr2VQ588cPnVZ43YOAIhevfZlsz7mvGJVt9nxVtAweEeLQbUVPnDmhIfJLB_UngHTMNJNx2uJaZjs3A2kB1jC0eMd2BtjaCqppW_GXpzQeg3mnd-i_sxKCSOdgUqEMBzfq0ntneLYDsQfedCrqLqNQ4TKyR-bIbVQJKCxRMNQEr0PWQA_Lyy-BaUHsrJA6Eq55m0vhuo4dolXSfl2iGgwV_-JjS2uZB7Ix0Eo8xjC9Zf80lVXNwUN2LQgxZgfWNphc73cu8tkOjn1a9aSjChqeW7pA5JyDCKlt6kdcuDYvJv_6YW1ekA-hP8xDHPoakl3VD5lX-_BaWy0aHVoIyj2Nd-9JGMDhMplmfM6AtDQThEiHf9u2shSca9dPR6cLHird5F5AU5QAqDz-RBzxNbxg7B2YUd7iYlgDPzJrC9kXklTlaRLb-DyORXL8uIAWHb5LuWvFlLYrkETcQFCMNBk3w8JhW2ilL5Ie2ls_5QaLcuYqpW7Y8W9yFBUFcTHSD6pV7E4y8PAbhnFZ84SQIii5W4JT-bedOohE7HFGrjEQF83gfF5qtDmvENtcI-IwmEXiDrpm4-pAeygLG1M68xuHUtRtNMnBM4VPQvqmiQk0hkqGUtm_gjWKa9JYbZUqGgf98EFIZYsgpT_wVyHYGr519zadcvvcQ2wnIwVGIfUak23nbRzg_QOedU3TlJAPBKd4lUnnsoAYnUjpSXagOyYs-P1BWkiwGZcn33sh6iaBZtw4pGDj63NOAwUDRib1Nqtr6HU858gKh3Jc34-aNySLe6N34K-jEINM0nt_ny0cB_TeRXteoyOUIe53G9ghrF_OGZFT79x-bQIdGHcFxRaGbtRdO_XUHqFifsGnmjg0gUWFbs-qpgyJddVmRp0pDjj74F1jeYIEgi3LRT7KF55j4hyaTcT1XHYkNyRoMvIqtVT7SBHhxxynblf0sLgiMK5GhHPdmawcq1HSX3ihLDY629p9XX6hCJ4M90IQ-xexfcUXhGvD33hbNz0ZUCXVM5Vv4XMY0-Iti2ZX77KqLguTQr1f1baGLrNl1GN9rhkUJ-zPWUBqtimFPNdUKfMKtVPECbpu2-lYch0iP28u5waOT_t0HcX3HYZwfPeVrQgvnkOYaPSPkCqMZMhbTKkSCTLQ22tLaKQaozDLRjrCCJFN-TGmQtz0fn46FD5zIescj13rVj_z0hSZYEX9s4cwHaJ6uGvgipcvr2XYTmKVFBkU1-pBT06ZHbwC-GYSwxWzUdIogWzZ_W9LBQUYSSXuDZBb7WEf_NwzmGxS3JGsHQWKepxN6IG8MYNuy0FgqjgeK9Dwe0tsohywO8l7BeAOj3bUDKJHw-RaaB4zGUgO2DCRUPZTPtzrPKFRQtijryIWsHmGT-CrpjK6dtF8Vr0wJiv773hCVp0vvyX0XCfhEoxz0AKQd-zzdlsEKR9nGvMak0_vQQX-9TW6YHfrl4g3C4tLuXD9sKkBtnHzQHe7LAwn6e54flmBHKc50nw_3wmbT9A-vUPj7n9mBRUTdhD3La5uzVYmyNAVv1NRzLusEgq9erVC77KzGotuyFt1mRMJOc3xS1xzvQWuHc9nNfY2llHSCYxf0OB9ZgUFF0EoyxyXWfZDO_3yMJ9BePynlA0OokC-TMWTiTOwaMxteYIqGTro72x9eJ4HnjrWdSvmF7Bl2gKxbNnpcGk5FgJLE844mWDydTz72BaCZmP9lK0OF7x_kG70uokdnlLbY2GKETo949BIWVOHI4EM1G88xQ-rbMY0n2PP02dLGDoNbg3PFphS0F4DwvYbnUl8_bqHNiakRKJxxomRC45XzF9QiDoxP97qWmNEtSg", title: "Феи: Тайна зимнего леса", link: "https://t.me/kinozimushka/178"},
+		// Add all your 137 movies here
+        ];
+
+        const moviesPerPage = 16; // You can change this number for more or less per page
+        let currentPage = 1;
+        const totalPages = Math.ceil(movies.length / moviesPerPage);
+
+        // Function to render the movies on the current page
+        function renderMovies() {
+            const startIndex = (currentPage - 1) * moviesPerPage;
+            const endIndex = startIndex + moviesPerPage;
+            const moviesToDisplay = movies.slice(startIndex, endIndex);
+
+            const movieContainer = document.getElementById('movie-container');
+            movieContainer.innerHTML = '';
+            moviesToDisplay.forEach(movie => {
+                const movieDiv = document.createElement('div');
+                movieDiv.classList.add('movie');
+                movieDiv.innerHTML = `
+                    <img src="${movie.img}" alt="${movie.title}">
+                    <div class="movie-title">${movie.title}</div>
+                    <a href="${movie.link}" target="_blank">Смотреть</a>
+                `;
+                movieContainer.appendChild(movieDiv);
+            });
+
+            document.getElementById('page-number').textContent = currentPage;
+
+            renderPageList(); // Re-render the page list whenever the page changes
+        }
+
+        // Function to change page (next or previous)
+        function changePage(direction) {
+            currentPage += direction;
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            renderMovies();
+        }
+
+        // Function to render the list of pages
+        function renderPageList() {
+            const pageList = document.getElementById('page-list');
+            pageList.innerHTML = ''; // Clear the current page list
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.onclick = () => {
+                    currentPage = i;
+                    renderMovies();
+                };
+                pageList.appendChild(pageButton);
+            }
+        }
+        renderMovies();  // Initial render
+    </script>
+</body>
+</html>
